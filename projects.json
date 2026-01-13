@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ascii-world",
+    "title": "asciiworld",
+    "year": "2025",
+    "cover": "image/ascii.png",
+    "category": ["Web", "Graphics"],
+    "tools": ["Three.js", "JavaScript"],
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+    {
+    "id": "satellite-embeddings",
+    "title": "Critical Atlas of Satellite Embeddings",
+    "year": "2026",
+    "cover": "image/globe.png",
+    "category": ["Data", "ML", "Writing", "GIS"],
+    "tools": ["Python", "Google Earth Engine", "Machine Learning", "GIS", "Adobe"],
+    "description": "Sed do eiusmod tempor incididunt ut labore."
+  },
+  {
+    "id": "physarum",
+    "title": "Agent-Based Physarum Simulation",
+    "year": "2025",
+    "cover": "image/grass.jpg",
+    "category": ["3D"],
+    "tools": ["Grasshopper", "Rhino", "C#"],
+    "description": "Sed do eiusmod tempor incididunt ut labore."
+  },
+    {
+    "id": "nyc-semantics",
+    "title": "NYC: Spatial and Semantic Networks",
+    "year": "2025",
+    "cover": "image/nyc.png",
+    "category": ["ML", "3D", "GIS"],
+    "tools": ["Grasshopper", "Rhino", "Python", "Javascript"],
+    "description": "Sed do eiusmod tempor incididunt ut labore."
+  },
+    {
+    "id": "procedural-terrain-generation",
+    "title": "Procedural Terrain Generation",
+    "year": "2021",
+    "cover": "image/terrain.png",
+    "category": ["Graphics"],
+    "tools": ["C++", "OpenGL"],
+    "description": "Quis nostrud exercitation ullamco laboris."
+  },
+    {
+    "id": "greenland",
+    "title": "Greenland Geopolitics",
+    "year": "2024",
+    "cover": "image/greenland.png",
+    "category": ["Web", "GIS"],
+    "tools": ["GIS", "JavaScript"],
+    "description": "Ut enim ad minim veniam."
+  },
+    {
+    "id": "digital-library",
+    "title": "Digital Library",
+    "year": "2024",
+    "cover": "image/lib.png",
+    "category": ["ML", "Data", "Web"],
+    "tools": ["Machine Learning", "JavaScript"],
+    "description": "Ut enim ad minim veniam."
+  },
+  {
+    "id": "virtual-immaterial",
+    "title": "virtual (im)material",
+    "year": "2021",
+    "cover": "image/world.png",
+    "category": ["Graphics"],
+    "tools": ["C#", "Unity"],
+    "description": "Quis nostrud exercitation ullamco laboris."
+  }
+]

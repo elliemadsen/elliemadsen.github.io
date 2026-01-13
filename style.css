@@ -1,0 +1,132 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: white;
+  color: black;
+  font-family: "Courier New", monospace;
+  height: 100vh;
+}
+
+a {
+  color: black;
+}
+
+/* Outer container */
+.outer {
+  /* equal inset on all sides (adjust --outer-gap as needed) */
+  position: absolute;
+  inset: 2.5vh;
+  border: 1px solid black;
+  display: flex;
+  overflow: hidden; /* clip anything that escapes the outer boundary */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 20%;
+  border-right: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Content */
+.content {
+  width: 80%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: auto; /* allow internal scrolling without escaping the outer box */
+}
+
+/* Filters */
+.filters {
+  margin: 1rem;
+  font-size: 0.9rem;
+}
+
+.filters span {
+  margin-right: 1rem;
+  cursor: pointer;
+  color: #888;
+}
+
+.filters span.active {
+  color: black;
+  font-weight: bold;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin: 1rem;
+}
+
+.project {
+  cursor: pointer;
+}
+
+.project img {
+  width: 100%;
+  display: block;
+}
+
+.project-meta {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.project-meta .subtitle {
+  font-size: 0.7rem;
+}
+
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .outer {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    display: none;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid black;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
