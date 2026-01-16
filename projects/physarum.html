@@ -1,0 +1,65 @@
+<div>
+  <p></p>
+  <p>
+    I created a generative agent-based Physarum slime mold simulation script in
+    Grasshopper that can be applied to biomorphorphic structural design.
+
+    <br /><br />
+
+    Physarum is a slime mold that forms efficient networks balancing robustness
+    and shortest path without any centralized intelligence. This is executed
+    through many local interactions: the organism spreads randomly, senses
+    chemical signals, and reinforces paths where more nutrients flow. In my
+    algorithmic implementation, this translates to an agent-based simulation
+    model. Each agent senses its surroundings by sampling a numerical field,
+    adjusts its direction toward stronger signals and deposits a trail as it
+    moves. Over many iterations, trails accumulate into branching and merging
+    network structures. Each agent's path is recorded as a polyline, normalized
+    to the simulation's bounding box, and then remapped to the target surface
+    domain to conform the generative structure to a 3D facade geometry.
+
+    <br /><br />
+
+    Parametrized user inputs include agent count, sensor angle, sensor offset,
+    step size, number of steps, pipe radius, sample rate, and facade surface
+    geometry.
+  </p>
+  <img
+    src="image/physarum-animation.gif"
+    style="width: 100%; margin-top: 20px"
+  />
+
+  <br /><br />
+  I build upon previous work in Physarum simulation by contributing a 3D
+  implementation in Grasshopper. Rather than producing a visual representation
+  of the organism, my implementation generates a structural model that bridges
+  the gap between research and parametric design.
+
+  <br /><br /><br /><br />
+
+  <h4>Bibliography</h4>
+  <br />
+
+  <p>
+    Fogleman, Michael. Fogleman/Physarum. Go. November 9, 2020.
+    <a href="https://github.com/fogleman/physarum" target="_blank"
+      >https://github.com/fogleman/physarum</a
+    >.
+    <br />
+    <br />
+
+    Jenson, Sage. “36 Points.”
+    <a href="https://sagejenson.com/36points" target="_blank"
+      >https://sagejenson.com/36points</a
+    >.
+    <br />
+    <br />
+
+    Jones, Jeff. “Characteristics of Pattern Formation and Evolution in
+    Approximations of Physarum Transport Networks.” Artificial Life 16, no. 2
+    (2010).
+    <a href="https://doi.org/10.1162/artl.2010.16.2.16202" target="_blank"
+      >https://doi.org/10.1162/artl.2010.16.2.16202</a
+    >.
+  </p>
+</div>

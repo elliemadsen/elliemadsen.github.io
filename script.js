@@ -11,14 +11,16 @@ fetch("projects.json")
 
 function renderFilters() {
   const filters = document.getElementById("filters");
-  const categories = new Set(["All"]);
+  const categorySet = new Set();
 
   allProjects.forEach(p =>
-    p.category.forEach(c => categories.add(c))
+    p.category.forEach(c => categorySet.add(c))
   );
 
+  const sortedCategories = ["All", ...Array.from(categorySet).sort()];
+
   filters.innerHTML = "";
-  categories.forEach(cat => {
+  sortedCategories.forEach(cat => {
     const span = document.createElement("span");
     span.textContent = cat;
     if (cat === activeCategory) span.classList.add("active");

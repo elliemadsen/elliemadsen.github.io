@@ -9,6 +9,12 @@ body {
   color: black;
   font-family: "Courier New", monospace;
   height: 100vh;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 a {
@@ -34,6 +40,7 @@ a {
   justify-content: space-between;
   padding: 1rem;
   font-size: 0.9rem;
+  overflow-wrap: break-word;
 }
 
 /* Content */
@@ -65,7 +72,7 @@ a {
 /* Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
   margin: 1rem;
 }
@@ -86,6 +93,47 @@ a {
 
 .project-meta .subtitle {
   font-size: 0.7rem;
+}
+
+/* project closeup sidebar */
+
+.project-sidebar-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  font-size: 1rem;
+  overflow: auto; /* allow internal scrolling without escaping the outer box */
+  overflow-wrap: break-word;
+}
+
+.project-sidebar-content .title {
+  font-size: 1.8rem;
+}
+
+.project-sidebar-content .subtitle {
+  font-size: 0.7rem;
+}
+
+.close-button {
+  text-align: right;
+  cursor: pointer;
+  font-size: 2rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* subtitles on project pages */
+h4 {
+  font-weight: normal;
+  font-size: 1.5rem;
+}
+
+.important-link {
+  background-color: black;
+  color: white;
+  font-size: 1.2rem;
+  padding: 0.3rem 0.6rem;
 }
 
 

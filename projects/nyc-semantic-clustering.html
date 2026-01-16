@@ -1,0 +1,64 @@
+<div>
+  <p>
+    <a
+      class="important-link"
+      href="https://elliemadsen.github.io/nyc-semantic-model/"
+      target="_blank"
+      >view the interface</a
+    >
+    <br /><br /><br />
+
+    I used data analysis to illustrate Manhattan's spatial and semantic urban
+    fabric, questioning whether the city's physical form, density, and land use
+    correlate with its qualitative and experiential sense of place. By
+    regionally clustering Manhattan in both spaces and comparing the results,
+    this project asks whether distance in high-dimensional space, which
+    represents semantic similarity, aligns with distance in 3D space, or
+    physical proximity.
+    <br /><br />
+    My process adapted techniques typically used in large-scale machine learning
+    and graph infrastructure to urban data. Using city blocks as the unit of
+    analysis, I first ran k-means clustering on the blocks using spatial
+    attributes derived from building and lot data—such as density, height, floor
+    area, and land-use intensity. This established a baseline spatial clustering
+    that reflects conventional urban metrics and planning logics.
+  </p>
+
+  <img src="image/nyc-model2.gif" style="width: 70%; margin-left: 15%" />
+
+  <p>
+    I then created a second model derived from semantic data. I first compiled
+    strings of text associated with geographical areas—such as business
+    categories, names, and user-generated descriptions—from Google's Places API.
+    I then used an open source SentenceTransformer model to construct embeddings
+    that encode the semantic content of this text; in other words, how regions
+    are experienced and understood. I ran k-means clustering in this semantic
+    space, producing an alternative partitioning of Manhattan that captures
+    language and association rather than spatial form.
+  </p>
+
+  <img
+    src="image/manhattan_clusters.png"
+    style="width: 60%; margin-left: 20%; margin-top: 40px"
+  />
+
+  <p>
+    Comparing the resulting clusters revealed that certain regions remain
+    consistent across both representations, while others diverge. Central Park,
+    for instance, emerged as a single coherent region in the spatial clustering,
+    grouped with other low-density spaces like Riverside Park and StuyTown.
+    Semantically, however, the park was not uniform: its edges were clustered
+    apart from its interior, reflecting distinct uses, associations, and
+    cultural meanings. This highlights how places that appear spatially
+    homogeneous can contain multiple semantic identities, depending on context
+    and proximity.
+    <br /><br />
+
+    To illustrate these relationships, I represented the spatial and semantic
+    embedding spaces as interactive network visualizations. I connected the
+    blocks in each cluster to their nearest neighbors, forming networks in which
+    edges represent semantic distance, or similarity. Finally I created web map
+    interface that turns an abstract high-dimensional embedding space into an
+    interactive 3D environment.
+  </p>
+</div>

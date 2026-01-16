@@ -3,20 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project</title>
+    <title>Ellie Madsen</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="image/e.png" />
   </head>
   <body>
     <div class="outer">
       <aside class="sidebar" id="project-info"></aside>
 
       <main class="content">
-        <div
-          style="text-align: right; cursor: pointer"
-          onclick="window.history.back()"
-        >
-          x
-        </div>
+        <div class="close-button" onclick="window.history.back()">x</div>
         <div id="project-content"></div>
       </main>
     </div>
@@ -29,16 +25,57 @@
           const project = data.find((p) => p.id === id);
 
           document.getElementById("project-info").innerHTML = `
-      <p>${project.title}</p>
-      <p>${project.year}</p>
-      <p>${project.category.join(" | ")}</p>
-      <p>${project.tools.join(" | ")}</p>
+          <div class="project-sidebar-content">
+            <p class="title">${project.title}</p>
+            <div>
+              <p class="subtitle">Methods</p>
+              <p>${project.category.join(", ")}</p>
+            </div>
+            <div>
+              <p class="subtitle">Tools</p>
+              <p>${project.tools.join(", ")}</p>
+            </div>
+            <div>
+              <p class="subtitle">Year</p>
+              <p>${project.year}</p>
+            </div>
+            ${
+              project.link
+                ? `<div>
+              <p class="subtitle">Project Website</p>
+              <a href="${project.link}" target="_blank">${project.link
+                    .replace("https://", "")
+                    .replace(/\//g, "/<wbr>")}</a>
+            </div>`
+                : ""
+            }
+            ${
+              project.github
+                ? `<div>
+              <p class="subtitle">Code Repository</p>
+              <a href="${project.github}" target="_blank">${project.github
+                    .replace("https://", "")
+                    .replace(/\//g, "/<wbr>")}</a>
+            </div>`
+                : ""
+            }
+            ${
+              project.partner
+                ? `<div>
+              <p class="subtitle">Partner</p>
+              <p>${project.partner}</p>
+            </div>`
+                : ""
+            }
+            <img src="${project.cover}" style="width:100%;">
+          </div>
     `;
 
-          document.getElementById("project-content").innerHTML = `
-      <img src="${project.cover}" style="width:100%;">
-      <p style="margin-top:1rem;">${project.description}</p>
-    `;
+          fetch(`projects/${project.id}.html`)
+            .then((res) => res.text())
+            .then((html) => {
+              document.getElementById("project-content").innerHTML = html;
+            });
         });
     </script>
   </body>
