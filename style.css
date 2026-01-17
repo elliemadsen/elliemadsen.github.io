@@ -123,8 +123,7 @@ a {
   margin-bottom: 1rem;
 }
 
-/* subtitles on project pages */
-h4 {
+h4 { /* subtitles on project pages */
   font-weight: normal;
   font-size: 1.5rem;
 }
@@ -132,8 +131,14 @@ h4 {
 .important-link {
   background-color: black;
   color: white;
-  font-size: 1.2rem;
+  /* font-size: 1.2rem; */
   padding: 0.3rem 0.6rem;
+}
+
+.project-content {
+  width: 86%;
+  margin-left: 6%;
+  margin-bottom: 4rem;
 }
 
 
@@ -178,3 +183,14 @@ h4 {
     display: block;
   }
 }
+
+  /* Project content list styling */
+  .project-content ul {
+    list-style: none;
+    padding-left: 1.25rem; /* indent bullets */
+    margin: 0.5rem 0 1rem; /* vertical spacing around list */
+  }
+
+  .project-content li {
+    margin-bottom: 0.5rem; /* space between items */
+  }

@@ -51,7 +51,7 @@
   },
   {
     "id": "greenland",
-    "title": "Geopolitical intervention in Greenland: a narrative archive",
+    "title": "Atlas of Geopolitical Intervention in Greenland",
     "year": "2024",
     "cover": "image/greenland.jpg",
     "category": ["Web", "GIS"],
@@ -61,15 +61,16 @@
     "link": "https://elliemadsen.github.io/greenland/"
   },
   {
-    "id": "procedural-terrain-generation",
-    "title": "Procedural Terrain Generation",
+    "id": "procedurally-generated-terrain",
+    "title": "Procedurally Generated Terrain",
     "year": "2021",
     "cover": "image/terrain3.png",
     "category": ["Graphics", "3D Modeling"],
     "tools": ["C++", "OpenGL"],
     "description": "",
     "github": "https://github.com/elliemadsen/terrain-generator",
-    "link": ""
+    "link": "",
+    "partner": "Jenna Soenksen"
   },
   {
     "id": "digital-library",
@@ -79,8 +80,8 @@
     "category": ["ML", "Web"],
     "tools": ["Machine Learning", "JavaScript"],
     "description": "",
-    "github": "",
-    "link": ""
+    "github": "https://github.com/elliemadsen/digital-library",
+    "link": "https://elliemadsen.github.io/digital-library/"
   },
   {
     "id": "virtual-immaterial",

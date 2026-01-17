@@ -1,0 +1,70 @@
+<div class="project-content">
+  <a
+    href="https://elliemadsen.github.io/digital-library/"
+    target="_blank"
+    class="important-link"
+    >View the library</a
+  >
+  <br /><br /><br />
+
+  <p>
+    This digital library is an interactive platform for exploring a collection
+    of books using semantic embedding and visualization techniques. Traditional
+    methods of linearly organizing books by author or topic are rigid and do not
+    align with cognitive processes of associative thinking. This library
+    leverages dimensionality reduction to create a dynamic and intuitive
+    browsing experience based on semantic similarity.
+    <br /><br />
+
+    Users can view the library in three modes.
+  </p>
+  <ul>
+    <li>
+      3D: Books are arranged in a three-dimensional semantic space with
+      interactive camera navigation, rotation, and zooming.
+    </li>
+    <li>
+      2D: Books are arranged in a two-dimensional scatterplot based on their
+      semantic similarity with interactive zooming and panning.
+    </li>
+    <li>List: Books are presented in a sortable and filterable list format.</li>
+  </ul>
+  <p>
+    The positions of books in the 2D and 3D views are determined by embeddings
+    generated from book descriptions and metadata using the Sentence
+    Transformers model
+    <a
+      href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2"
+      target="_blank"
+      >all-MiniLM-L6-v2</a
+    >. Dimensionality reduction is performed using either
+    <a
+      href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html"
+      target="_blank"
+      >t-SNE</a
+    >
+    (T-Distributed Stochastic Neighbor Embedding) or
+    <a href="https://umap-learn.readthedocs.io/en/latest/" target="_blank"
+      >UMAP</a
+    >
+    (Uniform Manifold Approximation and Projection). This approach embeds
+    meaning in the space itself. Two books that are close together are
+    semantically similar, allowing users to discover related works intuitively.
+
+    <br /><br />
+
+    The library contains all the books I've ever read. Book data is sourced from
+    my personal library on
+    <a
+      href="https://www.goodreads.com/review/list/20954505?shelf=read"
+      target="_blank"
+      >Goodreads</a
+    >
+    and cover images are provided by the
+    <a href="https://openlibrary.org/developers/api" target="_blank"
+      >Open Library API</a
+    >. Visualization is implemented using
+    <a href="https://d3js.org/" target="_blank">d3.js</a> and
+    <a href="https://threejs.org/">three.js</a>. <br /><br />
+  </p>
+</div>

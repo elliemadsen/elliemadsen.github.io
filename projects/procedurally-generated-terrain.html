@@ -1,0 +1,40 @@
+<div class="project-content">
+  <p>
+    This procedurally generated terrain environment was created from scratch in
+    C++ with custom GPU shaders. Users can customize parameters such as terrain
+    scale, biome distribution, normal mapping, texture mapping, fog, and
+    lighting. The terrain can also be exported as an obj file for use in other
+    3D software.
+    <br /><br />
+
+    The terrain is segmented into sub-regions and a value noise function is used
+    to determine which biome (plains, hills, mountains) to generate. A smooth
+    interpolation between biomes is achieved by weighing the height of each
+    biome and updating the total output height. The biome value noise function
+    is scaled by user input, which in turn scales up and down the amount each
+    biome appears on the terrain.
+    <br /><br />
+
+    Normal mapping was implemented with a custom vertex shader and fragment
+    shader. There are five different texture maps in the scene: day sky, night
+    sky, sunset sky, grass, and rock. The fragment shader also inlcudes custom
+    fog and lighting effects.
+  </p>
+  <img
+    src="image/terrain/terrain-9.png"
+    style="width: 100%; margin-top: 20px; margin-bottom: 20px"
+  />
+  <img
+    src="image/terrain/terrain-6.png"
+    style="width: 100%; margin-top: 20px; margin-bottom: 20px"
+  />
+  <img
+    src="image/terrain/terrain-8.png"
+    style="width: 100%; margin-top: 20px; margin-bottom: 20px"
+  />
+
+  <img
+    src="image/terrain/terrain-1.webp"
+    style="width: 100%; margin-top: 20px; margin-bottom: 20px"
+  />
+</div>
