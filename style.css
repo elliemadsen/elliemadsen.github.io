@@ -142,6 +142,13 @@ h4 { /* subtitles on project pages */
 }
 
 
+.project-content img {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+
 /* Hamburger */
 .hamburger {
   display: none;

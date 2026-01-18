@@ -3,7 +3,7 @@
     "id": "satellite-embeddings",
     "title": "Critical Atlas of Satellite Embeddings",
     "year": "2026",
-    "cover": "image/globe.png",
+    "cover": "image/sat-globe.png",
     "category": ["ML", "GIS", "Writing"],
     "tools": [
       "Python",
@@ -76,7 +76,7 @@
     "id": "digital-library",
     "title": "Digital Library",
     "year": "2024",
-    "cover": "image/books.png",
+    "cover": "image/library1.png",
     "category": ["ML", "Web"],
     "tools": ["Machine Learning", "JavaScript"],
     "description": "",
