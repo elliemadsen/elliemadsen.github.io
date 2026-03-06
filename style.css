@@ -72,9 +72,10 @@ a {
 /* Grid */
 .grid {
   display: grid;
+  /* change N columnes in grid here */
   grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  margin: 1rem;
+  gap: 3rem;
+  margin: 2rem;
 }
 
 .project {

@@ -1,7 +1,7 @@
 [
   {
     "id": "satellite-embeddings",
-    "title": "Critical Atlas of Satellite Embeddings",
+    "title": "Critical Atlas of Earth Embeddings",
     "year": "2026",
     "cover": "image/sat-globe.png",
     "category": ["ML", "GIS", "Writing"],
@@ -38,9 +38,21 @@
     "github": "https://github.com/elliemadsen/nyc-semantic-model",
     "link": "https://elliemadsen.github.io/nyc-semantic-model/"
   },
+
+  {
+    "id": "hypercity",
+    "title": "Reading the Hypercity",
+    "year": "2026",
+    "cover": "image/hypercity.png",
+    "category": ["Writing", "Web"],
+    "tools": [],
+    "description": "",
+    "github": "https://github.com/elliemadsen/hypercity",
+    "link": "https://elliemadsen.net/hypercity/"
+  },
   {
     "id": "physarum",
-    "title": "Physarum: Generative Structural Simulation",
+    "title": "Generative Physarum Simulation",
     "year": "2025",
     "cover": "image/physarum.png",
     "category": ["3D Modeling"],
@@ -50,15 +62,15 @@
     "link": ""
   },
   {
-    "id": "greenland",
-    "title": "Atlas of Geopolitical Intervention in Greenland",
+    "id": "digital-library",
+    "title": "Digital Library",
     "year": "2024",
-    "cover": "image/greenland.jpg",
-    "category": ["Web", "GIS"],
-    "tools": ["GIS", "JavaScript"],
+    "cover": "image/library1.png",
+    "category": ["ML", "Web"],
+    "tools": ["Machine Learning", "JavaScript"],
     "description": "",
-    "github": "https://github.com/elliemadsen/greenland",
-    "link": "https://elliemadsen.github.io/greenland/"
+    "github": "https://github.com/elliemadsen/digital-library",
+    "link": "https://elliemadsen.github.io/digital-library/"
   },
   {
     "id": "procedurally-generated-terrain",
@@ -73,15 +85,15 @@
     "partner": "Jenna Soenksen"
   },
   {
-    "id": "digital-library",
-    "title": "Digital Library",
+    "id": "greenland",
+    "title": "Atlas of Geopolitical Intervention in Greenland",
     "year": "2024",
-    "cover": "image/library1.png",
-    "category": ["ML", "Web"],
-    "tools": ["Machine Learning", "JavaScript"],
+    "cover": "image/greenland.jpg",
+    "category": ["Web", "GIS"],
+    "tools": ["GIS", "JavaScript"],
     "description": "",
-    "github": "https://github.com/elliemadsen/digital-library",
-    "link": "https://elliemadsen.github.io/digital-library/"
+    "github": "https://github.com/elliemadsen/greenland",
+    "link": "https://elliemadsen.github.io/greenland/"
   },
   {
     "id": "virtual-immaterial",
