@@ -85,7 +85,19 @@
           fetch(`projects/${project.id}.html`)
             .then((res) => res.text())
             .then((html) => {
-              document.getElementById("project-content").innerHTML = html;
+              const container = document.getElementById("project-content");
+              container.innerHTML = html;
+              // innerHTML doesn't execute scripts — re-create each one so they run
+              Array.from(container.querySelectorAll("script")).forEach(
+                (oldScript) => {
+                  const newScript = document.createElement("script");
+                  Array.from(oldScript.attributes).forEach((attr) =>
+                    newScript.setAttribute(attr.name, attr.value),
+                  );
+                  newScript.textContent = oldScript.textContent;
+                  oldScript.parentNode.replaceChild(newScript, oldScript);
+                },
+              );
             });
         });
     </script>

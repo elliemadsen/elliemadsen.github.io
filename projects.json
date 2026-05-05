@@ -1,20 +1,37 @@
 [
   {
     "id": "satellite-embeddings",
-    "title": "Critical Atlas of Earth Embeddings",
+    "title": "Embedding Earth: A Critical Atlas of Planetary Computation",
     "year": "2026",
     "cover": "image/sat-globe.png",
     "category": ["ML", "GIS", "Writing"],
-    "tools": [
-      "Python",
-      "Google Earth Engine",
-      "Machine Learning",
-      "GIS",
-      "Adobe"
-    ],
+    "tools": ["Python", "Google Earth Engine", "GIS", "Adobe"],
     "description": "",
     "github": "https://github.com/elliemadsen/satellite-embeddings",
-    "link": ""
+    "link": "https://elliemadsen.net/satellite-embeddings/"
+  },
+
+  {
+    "id": "watershed",
+    "title": "Cannonsville Watershed Climate Modeling",
+    "year": "2026",
+    "cover": "image/watershed_wireframe1.png",
+    "category": ["GIS", "Web", "Graphics"],
+    "tools": ["Three.js", "Python", "GIS", "JavaScript"],
+    "description": "",
+    "github": "https://github.com/elliemadsen/ccsr-watershed-gis",
+    "link": "https://elliemadsen.net/ccsr-watershed-gis/"
+  },
+  {
+    "id": "nyc-semantic-clustering",
+    "title": "Spatial and Semantic Analysis of Manhattan",
+    "year": "2025",
+    "cover": "image/nyc-map.png",
+    "category": ["ML", "GIS", "Web"],
+    "tools": ["Grasshopper", "Rhino", "Python", "JavaScript"],
+    "description": "",
+    "github": "https://github.com/elliemadsen/nyc-semantic-model",
+    "link": "https://elliemadsen.github.io/nyc-semantic-model/"
   },
   {
     "id": "ascii-world",
@@ -28,18 +45,6 @@
     "link": "https://elliemadsen.github.io/ascii-world/"
   },
   {
-    "id": "nyc-semantic-clustering",
-    "title": "Spatially and Semantically Clustering Manhattan",
-    "year": "2025",
-    "cover": "image/nyc-map.png",
-    "category": ["ML", "3D Modeling", "GIS", "Web"],
-    "tools": ["Grasshopper", "Rhino", "Python", "Javascript"],
-    "description": "",
-    "github": "https://github.com/elliemadsen/nyc-semantic-model",
-    "link": "https://elliemadsen.github.io/nyc-semantic-model/"
-  },
-
-  {
     "id": "hypercity",
     "title": "Reading the Hypercity",
     "year": "2026",
@@ -49,17 +54,6 @@
     "description": "",
     "github": "https://github.com/elliemadsen/hypercity",
     "link": "https://elliemadsen.net/hypercity/"
-  },
-  {
-    "id": "physarum",
-    "title": "Generative Physarum Simulation",
-    "year": "2025",
-    "cover": "image/physarum.png",
-    "category": ["3D Modeling"],
-    "tools": ["Grasshopper", "Rhino", "C#"],
-    "description": "",
-    "github": "https://github.com/elliemadsen/physarum3d",
-    "link": ""
   },
   {
     "id": "digital-library",
@@ -77,12 +71,23 @@
     "title": "Procedurally Generated Terrain",
     "year": "2021",
     "cover": "image/terrain3.png",
-    "category": ["Graphics", "3D Modeling"],
+    "category": ["Graphics"],
     "tools": ["C++", "OpenGL"],
     "description": "",
     "github": "https://github.com/elliemadsen/terrain-generator",
     "link": "",
     "partner": "Jenna Soenksen"
+  },
+  {
+    "id": "physarum",
+    "title": "Generative Physarum Simulation",
+    "year": "2025",
+    "cover": "image/physarum.png",
+    "category": ["Graphics"],
+    "tools": ["Grasshopper", "Rhino", "C#"],
+    "description": "",
+    "github": "https://github.com/elliemadsen/physarum3d",
+    "link": ""
   },
   {
     "id": "greenland",
