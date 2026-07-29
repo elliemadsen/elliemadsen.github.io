@@ -52,7 +52,11 @@ function renderProjects() {
       </div>
     `;
     div.onclick = () => {
-      window.location.href = `project.html?id=${p.id}`;
+      if (p.open_link) {
+        window.open(p.link, "_blank");
+      } else {
+        window.location.href = `project.html?id=${p.id}`;
+      }
     };
     grid.appendChild(div);
   });

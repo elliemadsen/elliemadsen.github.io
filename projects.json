@@ -6,43 +6,39 @@
     "cover": "image/sat-globe.png",
     "category": ["ML", "GIS", "Writing"],
     "tools": ["Python", "Google Earth Engine", "GIS", "Adobe"],
-    "description": "",
     "github": "https://github.com/elliemadsen/satellite-embeddings",
-    "link": "https://elliemadsen.net/satellite-embeddings/"
+    "link": "https://gsapp-cdp.github.io/archive/projects/2026/EmbeddingEarth/"
   },
 
   {
     "id": "watershed",
-    "title": "Cannonsville Watershed Climate Modeling",
+    "title": "NYC Watershed Spatial Analysis",
     "year": "2026",
     "cover": "image/watershed_wireframe1.png",
     "category": ["GIS", "Web", "Graphics"],
     "tools": ["Three.js", "Python", "GIS", "JavaScript"],
-    "description": "",
     "github": "https://github.com/elliemadsen/ccsr-watershed-gis",
     "link": "https://elliemadsen.net/ccsr-watershed-gis/"
   },
   {
-    "id": "nyc-semantic-clustering",
-    "title": "Spatial and Semantic Analysis of Manhattan",
-    "year": "2025",
-    "cover": "image/nyc-map.png",
-    "category": ["ML", "GIS", "Web"],
-    "tools": ["Grasshopper", "Rhino", "Python", "JavaScript"],
-    "description": "",
-    "github": "https://github.com/elliemadsen/nyc-semantic-model",
-    "link": "https://elliemadsen.github.io/nyc-semantic-model/"
-  },
-  {
     "id": "ascii-world",
-    "title": "asciiworld",
+    "title": "ASCIIW0RLD",
     "year": "2025",
     "cover": "image/ascii.png",
     "category": ["Web", "Graphics"],
     "tools": ["Three.js", "JavaScript"],
-    "description": "",
     "github": "https://github.com/elliemadsen/ascii-world",
-    "link": "https://elliemadsen.github.io/ascii-world/"
+    "link": "https://elliemadsen.net/ascii-world/"
+  },
+  {
+    "id": "nyc-semantic-clustering",
+    "title": "Manhattan Morphology",
+    "year": "2025",
+    "cover": "image/nyc-map-transparent-closeup.png",
+    "category": ["ML", "GIS", "Web"],
+    "tools": ["Grasshopper", "Rhino", "Python", "JavaScript"],
+    "github": "https://github.com/elliemadsen/nyc-semantic-model",
+    "link": "https://elliemadsen.net/nyc-semantic-model/"
   },
   {
     "id": "hypercity",
@@ -51,20 +47,9 @@
     "cover": "image/hypercity.png",
     "category": ["Writing", "Web"],
     "tools": [],
-    "description": "",
     "github": "https://github.com/elliemadsen/hypercity",
-    "link": "https://elliemadsen.net/hypercity/"
-  },
-  {
-    "id": "digital-library",
-    "title": "Digital Library",
-    "year": "2024",
-    "cover": "image/library1.png",
-    "category": ["ML", "Web"],
-    "tools": ["Machine Learning", "JavaScript"],
-    "description": "",
-    "github": "https://github.com/elliemadsen/digital-library",
-    "link": "https://elliemadsen.github.io/digital-library/"
+    "link": "https://elliemadsen.net/hypercity/",
+    "open_link": true
   },
   {
     "id": "procedurally-generated-terrain",
@@ -73,32 +58,20 @@
     "cover": "image/terrain3.png",
     "category": ["Graphics"],
     "tools": ["C++", "OpenGL"],
-    "description": "",
     "github": "https://github.com/elliemadsen/terrain-generator",
     "link": "",
     "partner": "Jenna Soenksen"
   },
   {
-    "id": "physarum",
-    "title": "Generative Physarum Simulation",
-    "year": "2025",
-    "cover": "image/physarum.png",
-    "category": ["Graphics"],
-    "tools": ["Grasshopper", "Rhino", "C#"],
-    "description": "",
-    "github": "https://github.com/elliemadsen/physarum3d",
-    "link": ""
-  },
-  {
-    "id": "greenland",
-    "title": "Atlas of Geopolitical Intervention in Greenland",
+    "id": "digital-library",
+    "title": "Digital Library",
     "year": "2024",
-    "cover": "image/greenland.jpg",
-    "category": ["Web", "GIS"],
-    "tools": ["GIS", "JavaScript"],
-    "description": "",
-    "github": "https://github.com/elliemadsen/greenland",
-    "link": "https://elliemadsen.github.io/greenland/"
+    "cover": "image/library1.png",
+    "category": ["ML", "Web"],
+    "tools": ["Machine Learning", "JavaScript"],
+    "github": "https://github.com/elliemadsen/digital-library",
+    "link": "https://elliemadsen.net/digital-library/",
+    "open_link": true
   },
   {
     "id": "virtual-immaterial",
@@ -107,7 +80,6 @@
     "cover": "image/world2.png",
     "category": ["Graphics"],
     "tools": ["C#", "Unity"],
-    "description": "",
     "github": "https://github.com/elliemadsen/unity-digital-world",
     "link": "",
     "partner": "MC Vigilante"

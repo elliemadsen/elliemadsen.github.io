@@ -1,0 +1,23 @@
+[
+  {
+    "id": "physarum",
+    "title": "Generative Physarum Simulation",
+    "year": "2025",
+    "cover": "image/physarum.png",
+    "category": ["Graphics"],
+    "tools": ["Grasshopper", "Rhino", "C#"],
+    "github": "https://github.com/elliemadsen/physarum3d",
+    "link": ""
+  },
+  {
+    "id": "greenland",
+    "title": "Atlas of Geopolitical Intervention in Greenland",
+    "year": "2024",
+    "cover": "image/greenland.jpg",
+    "category": ["Web", "GIS"],
+    "tools": ["GIS", "JavaScript"],
+    "description": "",
+    "github": "https://github.com/elliemadsen/greenland",
+    "link": "https://elliemadsen.github.io/greenland/"
+  }
+]

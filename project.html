@@ -25,62 +25,64 @@
           const project = data.find((p) => p.id === id);
 
           document.getElementById("project-info").innerHTML = `
-          <div class="project-sidebar-content">
-            <p class="title">${project.title}</p>
+            <div class="project-sidebar-content">
+              <p class="title">${project.title}</p>
 
-            <div>
-              <p class="subtitle">Methods</p>
-              <p>${project.category.join(", ")}</p>
+
+              <div>
+                <p class="subtitle">Year</p>
+                <p>${project.year}</p>
+              </div>
+
+              ${
+                project.link
+                  ? `<div>
+                <p class="subtitle">Project Website</p>
+                <a href="${project.link}" target="_blank">${project.link
+                  .replace("https://", "")
+                  .replace(/\//g, "/<wbr>")}</a>
+              </div>`
+                  : ""
+              }
+
+              ${
+                project.github
+                  ? `<div>
+                <p class="subtitle">Code Repository</p>
+                <a href="${project.github}" target="_blank">${project.github
+                  .replace("https://", "")
+                  .replace(/\//g, "/<wbr>")}</a>
+              </div>`
+                  : ""
+              }
+
+              <div>
+                <p class="subtitle">Methods</p>
+                <p>${project.category.join(", ")}</p>
+              </div>
+
+              ${
+                project.partner
+                  ? `<div>
+                <p class="subtitle">Partner</p>
+                <p>${project.partner}</p>
+              </div>`
+                  : ""
+              }
+
+              <img src="${project.cover}" style="width:100%;">
             </div>
+      `;
 
-            ${
-              project.tools && project.tools.length > 0
-                ? `<div>
-              <p class="subtitle">Tools</p>
-              <p>${project.tools.join(", ")}</p>
-            </div>`
-                : ""
-            }
-
-            <div>
-              <p class="subtitle">Year</p>
-              <p>${project.year}</p>
-            </div>
-
-            ${
-              project.link
-                ? `<div>
-              <p class="subtitle">Project Website</p>
-              <a href="${project.link}" target="_blank">${project.link
-                .replace("https://", "")
-                .replace(/\//g, "/<wbr>")}</a>
-            </div>`
-                : ""
-            }
-
-            ${
-              project.github
-                ? `<div>
-              <p class="subtitle">Code Repository</p>
-              <a href="${project.github}" target="_blank">${project.github
-                .replace("https://", "")
-                .replace(/\//g, "/<wbr>")}</a>
-            </div>`
-                : ""
-            }
-
-            ${
-              project.partner
-                ? `<div>
-              <p class="subtitle">Partner</p>
-              <p>${project.partner}</p>
-            </div>`
-                : ""
-            }
-
-            <img src="${project.cover}" style="width:100%;">
-          </div>
-    `;
+          // re add this for the tools
+          //       ${
+          //   project.tools && project.tools.length > 0
+          //     ? `<div>
+          //   <p class="subtitle">Tools</p>
+          //   <p>${project.tools.join(", ")}</p>
+          // </div>`
+          //     : ""
+          // }
 
           fetch(`projects/${project.id}.html`)
             .then((res) => res.text())
