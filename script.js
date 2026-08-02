@@ -5,10 +5,11 @@ fetch("projects.json")
   .then(res => res.json())
   .then(data => {
     allProjects = data;
-    renderFilters();
+    // renderFilters();
     renderProjects();
   });
 
+/*
 function renderFilters() {
   const filters = document.getElementById("filters");
   const categorySet = new Set();
@@ -32,6 +33,7 @@ function renderFilters() {
     filters.appendChild(span);
   });
 }
+*/
 
 function renderProjects() {
   const grid = document.getElementById("projects");
@@ -64,7 +66,9 @@ function renderProjects() {
 
 /* Mobile menu toggle */
 document.querySelector(".hamburger").onclick = () => {
-  const sidebar = document.querySelector(".sidebar");
-  sidebar.style.display =
-    sidebar.style.display === "flex" ? "none" : "flex";
+  const sidebars = document.querySelectorAll(".sidebar");
+  const show = sidebars[0].style.display !== "flex";
+  sidebars.forEach(sidebar => {
+    sidebar.style.display = show ? "flex" : "none";
+  });
 };

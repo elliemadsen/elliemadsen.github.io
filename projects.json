@@ -9,7 +9,17 @@
     "github": "https://github.com/elliemadsen/satellite-embeddings",
     "link": "https://gsapp-cdp.github.io/archive/projects/2026/EmbeddingEarth/"
   },
-
+  {
+    "id": "hypercity",
+    "title": "Reading the Hypercity",
+    "year": "2026",
+    "cover": "image/hypercity.png",
+    "category": ["Writing", "Web"],
+    "tools": [],
+    "github": "https://github.com/elliemadsen/hypercity",
+    "link": "https://elliemadsen.net/hypercity/",
+    "open_link": true
+  },
   {
     "id": "watershed",
     "title": "NYC Watershed Spatial Analysis",
@@ -41,14 +51,14 @@
     "link": "https://elliemadsen.net/nyc-semantic-model/"
   },
   {
-    "id": "hypercity",
-    "title": "Reading the Hypercity",
-    "year": "2026",
-    "cover": "image/hypercity.png",
-    "category": ["Writing", "Web"],
-    "tools": [],
-    "github": "https://github.com/elliemadsen/hypercity",
-    "link": "https://elliemadsen.net/hypercity/",
+    "id": "digital-library",
+    "title": "Digital Library",
+    "year": "2024",
+    "cover": "image/library1.png",
+    "category": ["ML", "Web"],
+    "tools": ["Machine Learning", "JavaScript"],
+    "github": "https://github.com/elliemadsen/digital-library",
+    "link": "https://elliemadsen.net/digital-library/",
     "open_link": true
   },
   {
@@ -63,15 +73,14 @@
     "partner": "Jenna Soenksen"
   },
   {
-    "id": "digital-library",
-    "title": "Digital Library",
-    "year": "2024",
-    "cover": "image/library1.png",
-    "category": ["ML", "Web"],
-    "tools": ["Machine Learning", "JavaScript"],
-    "github": "https://github.com/elliemadsen/digital-library",
-    "link": "https://elliemadsen.net/digital-library/",
-    "open_link": true
+    "id": "physarum",
+    "title": "Parametric Physarum Simulation",
+    "year": "2025",
+    "cover": "image/physarum3.png",
+    "category": ["Graphics"],
+    "tools": ["Grasshopper", "Rhino", "C#"],
+    "github": "https://github.com/elliemadsen/physarum3d",
+    "link": ""
   },
   {
     "id": "virtual-immaterial",
