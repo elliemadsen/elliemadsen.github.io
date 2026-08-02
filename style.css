@@ -5,10 +5,10 @@
 }
 
 body {
-  background: white;
+  background: #f6faf2;
   color: black;
   font-family: "Roboto", sans-serif;
-  font-weight: 300;
+  font-weight:240;
   height: 100vh;
   animation: fadeIn 0.3s ease-in-out;
 }
@@ -34,6 +34,7 @@ a {
 
 /* Sidebar */
 .sidebar {
+  background: white;
   width: 20%;
   flex-shrink: 0;
   border-right: 1px solid black;
@@ -47,6 +48,7 @@ a {
 
 /* Content */
 .content {
+  background: white;
   flex: 1 1 0%;
   min-width: 0;
   display: flex;
@@ -67,7 +69,7 @@ a {
   margin-bottom: 0.75rem;
 }
 .about-me {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 
 /* Filters */

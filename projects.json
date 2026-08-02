@@ -22,7 +22,7 @@
   },
   {
     "id": "watershed",
-    "title": "NYC Watershed Spatial Analysis",
+    "title": "NYC Watershed Spatialization",
     "year": "2026",
     "cover": "image/watershed_wireframe1.png",
     "category": ["GIS", "Web", "Graphics"],
@@ -32,7 +32,7 @@
   },
   {
     "id": "ascii-world",
-    "title": "ASCIIW0RLD",
+    "title": "ASCII Worlding",
     "year": "2025",
     "cover": "image/ascii.png",
     "category": ["Web", "Graphics"],
