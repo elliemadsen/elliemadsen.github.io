@@ -1,0 +1,512 @@
+<div class="project-content">
+  <p>
+    <i>Embedding Earth: A Critical Atlas of Planetary Computation</i> is my
+    Master's thesis in Computational Design Practices at Columbia University
+    Graduate School of Architecture, Preservation, and Planning. This work was
+    awarded the 2026
+    <a href="https://www.arch.columbia.edu/student-awards/2026" target="_blank"
+      >GSAPP Writing Prize</a
+    >.
+    <br />
+    <br />
+    The application of machine learning foundation models to remotely sensed
+    data has accelerated rapidly, promising to transform traditional spatial
+    analysis with universal, high-dimensional embedding representations of
+    Earth's features. I argue that the construction of an embedded Earth is not
+    merely a technological development, but an epistemological shift in
+    planetary computation. I historicize Earth embeddings within lineages of
+    cartography, computation, and aesthetics, asking not what these data tell us
+    about the world, but what they tell us about ourselves—our desires and
+    sensibilities, our ways of knowing and making sense.
+    <br />
+    <br />
+    This critical analysis reveals Earth embeddings as neither a neutral
+    computational tool nor a reflection of the Earth, but a human-constructed
+    space with no ground truth. I apply computational data analysis and
+    visualization alongside conceptual frameworks from geography, science and
+    technology studies, and media theory in order to situate remote sensing
+    foundation models at the intersection of the digital humanities and spatial
+    sciences. I question not how well Earth embeddings represent the planet, but
+    what kind of world they construct.
+    <br />
+    <br />
+
+    You can read more about the project
+    <a
+      href="https://gsapp-cdp.github.io/archive/projects/2026/EmbeddingEarth/"
+      target="_blank"
+      >here</a
+    >.
+
+    <br />
+    <br />
+
+    The following atlas includes a selection of visualizations and writing from
+    the thesis. It was printed and bound in a 70-foot accordian
+    <a
+      href="https://www.instagram.com/p/DX-jcILEXlp/?img_index=2"
+      target="_blank"
+      >book</a
+    >.
+  </p>
+  <br /><br />
+
+  <!-- ── Atlas PDF Viewer ──────────────────────────────────────── -->
+  <style>
+    #atlasViewer {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid black;
+      /* Break out of .project-content's 86%/6% column to span full .content width */
+      margin-left: -6.98%;
+      width: 116.28%;
+    }
+    #atlasViewer:fullscreen {
+      display: flex;
+      flex-direction: column;
+      background: white;
+    }
+    #atlasToolbar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.75rem;
+      border-bottom: 1px solid black;
+      font-family: "Courier New", monospace;
+      font-size: 0.9rem;
+    }
+    .atlas-btn {
+      background: none;
+      border: 1px solid black;
+      font-family: "Courier New", monospace;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.15rem 0.55rem;
+      line-height: 1.4;
+    }
+    .atlas-btn:hover:not(:disabled) {
+      background: black;
+      color: white;
+    }
+    .atlas-btn:disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+    #atlasPageInfo {
+      min-width: 5rem;
+      text-align: center;
+    }
+    .atlas-divider {
+      color: #aaa;
+      user-select: none;
+    }
+    #atlasZoomInfo {
+      min-width: 3.5rem;
+      text-align: center;
+    }
+    #atlasFullscreenBtn {
+      margin-left: auto;
+    }
+    #atlasCanvasWrap {
+      overflow: auto;
+      background: #f0f0f0;
+      text-align: center;
+    }
+    #atlasViewer:fullscreen #atlasCanvasWrap {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #atlasCanvas {
+      display: block;
+      margin: 0 auto;
+      touch-action: none;
+    }
+  </style>
+
+  <div id="atlasViewer">
+    <div id="atlasToolbar">
+      <button
+        class="atlas-btn"
+        id="atlasPrevBtn"
+        onclick="window._atlas && window._atlas.prev()"
+      >
+        &#8592;
+      </button>
+      <span id="atlasPageInfo">— / —</span>
+      <button
+        class="atlas-btn"
+        id="atlasNextBtn"
+        onclick="window._atlas && window._atlas.next()"
+      >
+        &#8594;
+      </button>
+      <span class="atlas-divider">|</span>
+      <button
+        class="atlas-btn"
+        id="atlasZoomOutBtn"
+        onclick="window._atlas && window._atlas.zoomOut()"
+      >
+        &#8722;
+      </button>
+      <span id="atlasZoomInfo">100%</span>
+      <button
+        class="atlas-btn"
+        id="atlasZoomInBtn"
+        onclick="window._atlas && window._atlas.zoomIn()"
+      >
+        +
+      </button>
+      <button
+        class="atlas-btn"
+        id="atlasFullscreenBtn"
+        onclick="window._atlas && window._atlas.toggleFs()"
+      >
+        &#x26F6;
+      </button>
+    </div>
+    <div id="atlasCanvasWrap">
+      <canvas id="atlasCanvas"></canvas>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var PDFJS =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+      var WORKER =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      var PDF = "../Atlas/Atlas_August7_web.pdf";
+
+      var pdfDoc = null,
+        cur = 1,
+        total = 0,
+        busy = false,
+        queued = null;
+      var zoom = 1,
+        MIN_ZOOM = 0.5,
+        MAX_ZOOM = 8,
+        ZOOM_STEP = 1.3;
+      var currentPage = null,
+        currentFitScale = 1,
+        renderTask = null;
+      var DPR = window.devicePixelRatio || 1;
+
+      var canvas = document.getElementById("atlasCanvas");
+      var ctx = canvas.getContext("2d");
+      var wrap = document.getElementById("atlasCanvasWrap");
+      var info = document.getElementById("atlasPageInfo");
+      var zoomInfo = document.getElementById("atlasZoomInfo");
+      var prevBtn = document.getElementById("atlasPrevBtn");
+      var nextBtn = document.getElementById("atlasNextBtn");
+      var viewer = document.getElementById("atlasViewer");
+
+      function setUI() {
+        info.textContent = cur + " / " + total;
+        prevBtn.disabled = cur <= 1;
+        nextBtn.disabled = cur >= total;
+      }
+
+      function updateZoomUI() {
+        zoomInfo.textContent = Math.round(zoom * 100) + "%";
+        var zoomed = zoom > 1.01;
+        canvas.style.cursor = zoomed ? "grab" : "default";
+        // When zoomed, remove auto-centering so left overflow is reachable
+        canvas.style.margin = zoomed ? "0" : "0 auto";
+        wrap.style.textAlign = zoomed ? "left" : "center";
+      }
+
+      // Layout page dimensions (fetched from page 2 during init)
+      var layoutW = null,
+        layoutH = null;
+
+      function computeFitScale(page, n) {
+        var baseVp = page.getViewport({ scale: 1 });
+        if (document.fullscreenElement) {
+          if (n > 1) {
+            // Fullscreen layout pages: fill width, no horizontal scroll
+            var availW = wrap.clientWidth || window.innerWidth;
+            return availW / baseVp.width;
+          } else {
+            // Fullscreen page 1 (portrait): fit by height
+            return (window.innerHeight - 48) / baseVp.height;
+          }
+        } else {
+          var availW = wrap.clientWidth || 800;
+          if (n === 1 && layoutW && layoutH) {
+            // Scale page 1 to the same CSS height as a layout page would be at fit-width
+            var layoutCssH = (availW * layoutH) / layoutW;
+            return layoutCssH / baseVp.height;
+          }
+          // Layout pages (and page 1 fallback): fit to container width
+          return availW / baseVp.width;
+        }
+      }
+
+      function drawCurrentPage() {
+        if (renderTask) {
+          renderTask.cancel();
+          renderTask = null;
+        }
+        var vp = currentPage.getViewport({
+          scale: currentFitScale * zoom * DPR,
+        });
+        canvas.width = vp.width;
+        canvas.height = vp.height;
+        canvas.style.width = Math.round(vp.width / DPR) + "px";
+        canvas.style.height = Math.round(vp.height / DPR) + "px";
+        updateZoomUI();
+        renderTask = currentPage.render({ canvasContext: ctx, viewport: vp });
+        return renderTask.promise
+          .then(function () {
+            renderTask = null;
+          })
+          .catch(function () {
+            renderTask = null;
+          });
+      }
+
+      function render(n, keepZoom) {
+        if (!keepZoom) zoom = 1;
+        if (busy) {
+          queued = n;
+          return;
+        }
+        busy = true;
+        pdfDoc.getPage(n).then(function (page) {
+          currentPage = page;
+          currentFitScale = computeFitScale(page, n);
+          drawCurrentPage().then(function () {
+            busy = false;
+            cur = n;
+            setUI();
+            if (queued !== null) {
+              var q = queued;
+              queued = null;
+              render(q);
+            }
+          });
+        });
+      }
+
+      // Zoom centered on a point (scrollX/scrollY in scroll-space pixels)
+      function applyZoom(newZoom, scrollX, scrollY) {
+        newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newZoom));
+        if (!currentPage) return;
+        var oldW = parseFloat(canvas.style.width) || wrap.clientWidth;
+        var oldH = parseFloat(canvas.style.height) || wrap.clientHeight;
+        var cx =
+          scrollX != null ? scrollX : wrap.scrollLeft + wrap.clientWidth / 2;
+        var cy =
+          scrollY != null ? scrollY : wrap.scrollTop + wrap.clientHeight / 2;
+        var fracX = cx / oldW;
+        var fracY = cy / oldH;
+        zoom = newZoom;
+        drawCurrentPage().then(function () {
+          var newW = parseFloat(canvas.style.width);
+          var newH = parseFloat(canvas.style.height);
+          wrap.scrollLeft = fracX * newW - wrap.clientWidth / 2;
+          wrap.scrollTop = fracY * newH - wrap.clientHeight / 2;
+        });
+      }
+
+      // ── Mouse drag to pan ───────────────────────────────────────
+      var dragging = false,
+        dragX,
+        dragY,
+        scrollX0,
+        scrollY0;
+      canvas.addEventListener("mousedown", function (e) {
+        if (zoom <= 1.01) return;
+        dragging = true;
+        dragX = e.clientX;
+        dragY = e.clientY;
+        scrollX0 = wrap.scrollLeft;
+        scrollY0 = wrap.scrollTop;
+        canvas.style.cursor = "grabbing";
+        e.preventDefault();
+      });
+      window.addEventListener("mousemove", function (e) {
+        if (!dragging) return;
+        wrap.scrollLeft = scrollX0 - (e.clientX - dragX);
+        wrap.scrollTop = scrollY0 - (e.clientY - dragY);
+      });
+      window.addEventListener("mouseup", function () {
+        if (dragging) {
+          dragging = false;
+          updateZoomUI();
+        }
+      });
+
+      // ── Mouse wheel to change page ──────────────────────────────
+      var wheelCooldown = false;
+      wrap.addEventListener(
+        "wheel",
+        function (e) {
+          e.preventDefault();
+          if (wheelCooldown) return;
+          wheelCooldown = true;
+          setTimeout(function () {
+            wheelCooldown = false;
+          }, 300);
+          if (e.deltaY > 0 && cur < total) render(cur + 1);
+          else if (e.deltaY < 0 && cur > 1) render(cur - 1);
+        },
+        { passive: false },
+      );
+
+      // ── Pinch to zoom ───────────────────────────────────────────
+      var pinchDist0 = null,
+        pinchZoom0 = 1;
+      wrap.addEventListener(
+        "touchstart",
+        function (e) {
+          if (e.touches.length === 2) {
+            pinchDist0 = Math.hypot(
+              e.touches[0].clientX - e.touches[1].clientX,
+              e.touches[0].clientY - e.touches[1].clientY,
+            );
+            pinchZoom0 = zoom;
+          }
+        },
+        { passive: true },
+      );
+      wrap.addEventListener(
+        "touchmove",
+        function (e) {
+          if (e.touches.length === 2 && pinchDist0) {
+            e.preventDefault();
+            var d = Math.hypot(
+              e.touches[0].clientX - e.touches[1].clientX,
+              e.touches[0].clientY - e.touches[1].clientY,
+            );
+            applyZoom((pinchZoom0 * d) / pinchDist0);
+          }
+        },
+        { passive: false },
+      );
+      wrap.addEventListener("touchend", function () {
+        pinchDist0 = null;
+      });
+
+      function init() {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = WORKER;
+        pdfjsLib
+          .getDocument({
+            url: PDF,
+            rangeChunkSize: 131072,
+            disableStream: false,
+            disableAutoFetch: false,
+          })
+          .promise.then(function (doc) {
+            pdfDoc = doc;
+            total = doc.numPages;
+            setUI();
+            // Pre-fetch page 2 to learn the layout aspect ratio used to match page 1 height
+            if (doc.numPages >= 2) {
+              doc.getPage(2).then(function (p2) {
+                var vp2 = p2.getViewport({ scale: 1 });
+                layoutW = vp2.width;
+                layoutH = vp2.height;
+                render(1);
+              });
+            } else {
+              render(1);
+            }
+          });
+      }
+
+      document.addEventListener("fullscreenchange", function () {
+        if (pdfDoc) {
+          zoom = 1;
+          render(cur, false);
+        }
+      });
+
+      window._atlas = {
+        prev: function () {
+          if (cur > 1) render(cur - 1);
+        },
+        next: function () {
+          if (cur < total) render(cur + 1);
+        },
+        zoomIn: function () {
+          applyZoom(zoom * ZOOM_STEP);
+        },
+        zoomOut: function () {
+          applyZoom(zoom / ZOOM_STEP);
+        },
+        toggleFs: function () {
+          if (!document.fullscreenElement) viewer.requestFullscreen();
+          else document.exitFullscreen();
+        },
+      };
+
+      if (typeof pdfjsLib === "undefined") {
+        var pl = document.createElement("link");
+        pl.rel = "preload";
+        pl.as = "script";
+        pl.href = PDFJS;
+        document.head.appendChild(pl);
+      }
+
+      if (typeof pdfjsLib !== "undefined") {
+        init();
+      } else {
+        var s = document.createElement("script");
+        s.src = PDFJS;
+        s.onload = init;
+        document.head.appendChild(s);
+      }
+    })();
+  </script>
+  <!-- ── end Atlas PDF Viewer ─────────────────────────────────── -->
+
+  <!-- <a
+    href="https://elliemadsen.net/satellite-embeddings/
+"
+    target="_blank"
+    >Explore the website</a
+  > -->
+  <br /><br />
+
+  <!-- <img src="image/sat-grid1.png" />
+  <img src="image/sat-2dgrid2.png" />
+  <img src="image/sat-globe-spin.gif" style="width: 80%; margin-left: 10%" />
+  <img src="image/sat-pt-cloud1.png" style="width: 80%; margin-left: 10%" />
+  <img src="image/sat-pt-cloud3.png" style="width: 80%; margin-left: 10%" />
+  <img src="image/sat-3dgrid.png" style="width: 80%; margin-left: 10%" />
+  <img src="image/sat-2ptproj.svg" style="width: 100%" />
+
+  <img src="image/sat-wi.gif" style="width: 80%; margin-left: 10%" /> -->
+  <!-- <img src="image/sat-projection.svg" /> -->
+
+  <!-- <h4>Project Links</h4>
+  <br />
+
+  <p>
+    <a
+      href="https://elliemadsen.github.io/satellite-embeddings/dimension-reduction/point_cloud.html"
+      >Embedding Point Cloud Topology Visualization</a
+    ><br />
+    <a href="https://github.com/elliemadsen/satellite-embeddings"
+      >GitHub Repository</a
+    ><br />
+    <a
+      href="https://github.com/elliemadsen/satellite-embeddings/blob/main/poster/poster.pdf"
+      >Review Poster</a
+    ><br />
+    <a href="https://gsapp-map.projects.earthengine.app/view/sat-embeddings"
+      >Google Earth Engine App</a
+    ><br />
+    <a href="https://elliemadsen.github.io/propose-review/">Presentation Site</a
+    ><br />
+    <a
+      href="https://elliemadsen.github.io/satellite-embeddings/web-maps/globe.html"
+      >Web Map Globe Site</a
+    >
+  </p> -->
+  <br />
+</div>
