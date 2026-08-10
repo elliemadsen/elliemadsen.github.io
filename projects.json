@@ -4,7 +4,9 @@
     "title": "Embedding Earth: A Critical Atlas of Planetary Computation",
     "year": "2026",
     "cover": "image/sat-globe.png",
-    "category": ["ML", "GIS", "Writing"],
+    "wide": true,
+    "wideCover": "Atlas/Grid/grid_5Hx13W.png",
+    "category": ["GIS", "Writing", "ML"],
     "tools": ["Python", "Google Earth Engine", "GIS", "Adobe"],
     "github": "https://github.com/elliemadsen/satellite-embeddings",
     "link": "https://gsapp-cdp.github.io/archive/projects/2026/EmbeddingEarth/"
@@ -45,7 +47,7 @@
     "title": "Manhattan Morphology",
     "year": "2025",
     "cover": "image/nyc-map-transparent-closeup.png",
-    "category": ["ML", "GIS", "Web"],
+    "category": ["GIS", "Web", "ML"],
     "tools": ["Grasshopper", "Rhino", "Python", "JavaScript"],
     "github": "https://github.com/elliemadsen/nyc-semantic-model",
     "link": "https://elliemadsen.net/nyc-semantic-model/"
@@ -55,11 +57,21 @@
     "title": "Digital Library",
     "year": "2024",
     "cover": "image/library1.png",
-    "category": ["ML", "Web"],
+    "category": ["Web", "ML"],
     "tools": ["Machine Learning", "JavaScript"],
     "github": "https://github.com/elliemadsen/digital-library",
     "link": "https://elliemadsen.net/digital-library/",
     "open_link": true
+  },
+  {
+    "id": "physarum",
+    "title": "Physarum Simulation",
+    "year": "2025",
+    "cover": "image/physarum4_2.png",
+    "category": ["Graphics"],
+    "tools": ["Grasshopper", "Rhino", "C#"],
+    "github": "https://github.com/elliemadsen/physarum3d",
+    "link": ""
   },
   {
     "id": "procedurally-generated-terrain",
@@ -71,16 +83,6 @@
     "github": "https://github.com/elliemadsen/terrain-generator",
     "link": "",
     "partner": "Jenna Soenksen"
-  },
-  {
-    "id": "physarum",
-    "title": "Parametric Physarum Simulation",
-    "year": "2025",
-    "cover": "image/physarum3.png",
-    "category": ["Graphics"],
-    "tools": ["Grasshopper", "Rhino", "C#"],
-    "github": "https://github.com/elliemadsen/physarum3d",
-    "link": ""
   },
   {
     "id": "virtual-immaterial",

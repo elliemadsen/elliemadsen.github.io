@@ -104,10 +104,18 @@
       min-width: 3.5rem;
       text-align: center;
     }
+    .atlas-slider {
+      flex: 1 1 auto;
+      min-width: 60px;
+      max-width: 320px;
+      accent-color: rgb(111, 111, 111);
+      cursor: pointer;
+    }
     #atlasFullscreenBtn {
       margin-left: auto;
     }
     #atlasCanvasWrap {
+      position: relative;
       overflow: auto;
       background: #f0f0f0;
       text-align: center;
@@ -159,6 +167,17 @@
       >
         +
       </button>
+      <span class="atlas-divider">|</span>
+      <input
+        type="range"
+        id="atlasPageSlider"
+        class="atlas-slider"
+        min="1"
+        max="1"
+        step="1"
+        value="1"
+      />
+      <span class="atlas-divider">|</span>
       <button
         class="atlas-btn"
         id="atlasFullscreenBtn"
@@ -185,6 +204,8 @@
         total = 0,
         busy = false,
         queued = null;
+      var pendingWheelDir = null; // a direction-reversal that arrived mid-slide, to run the instant it finishes
+      var targetPage = 1; // page `cur` will become once any in-flight/queued slide finishes — used for bounds checks so a reversal isn't rejected against the stale pre-slide `cur`
       var zoom = 1,
         MIN_ZOOM = 0.5,
         MAX_ZOOM = 8,
@@ -202,11 +223,16 @@
       var prevBtn = document.getElementById("atlasPrevBtn");
       var nextBtn = document.getElementById("atlasNextBtn");
       var viewer = document.getElementById("atlasViewer");
+      var pageSlider = document.getElementById("atlasPageSlider");
 
       function setUI() {
         info.textContent = cur + " / " + total;
         prevBtn.disabled = cur <= 1;
         nextBtn.disabled = cur >= total;
+        pageSlider.max = total;
+        if (document.activeElement !== pageSlider) {
+          pageSlider.value = cur;
+        }
       }
 
       function updateZoomUI() {
@@ -281,6 +307,7 @@
           drawCurrentPage().then(function () {
             busy = false;
             cur = n;
+            targetPage = n;
             setUI();
             if (queued !== null) {
               var q = queued;
@@ -289,6 +316,92 @@
             }
           });
         });
+      }
+
+      // Slide to page n (dir: 1 = advancing/next, -1 = going back/prev).
+      // Snapshots the outgoing page onto a ghost canvas, draws the incoming
+      // page into the real canvas off-screen, then animates both across so
+      // it reads as a horizontal scroll rather than an instant swap.
+      function slidePage(n, dir) {
+        if (busy) return;
+        busy = true;
+
+        var travel = wrap.clientWidth;
+
+        var ghost = document.createElement("canvas");
+        ghost.width = canvas.width;
+        ghost.height = canvas.height;
+        ghost.getContext("2d").drawImage(canvas, 0, 0);
+        ghost.style.position = "absolute";
+        ghost.style.left = canvas.offsetLeft + "px";
+        ghost.style.top = canvas.offsetTop + "px";
+        ghost.style.width = canvas.offsetWidth + "px";
+        ghost.style.height = canvas.offsetHeight + "px";
+        ghost.style.pointerEvents = "none";
+        wrap.appendChild(ghost);
+
+        var prevOverflow = wrap.style.overflow;
+        wrap.style.overflow = "hidden";
+        canvas.style.transition = "none";
+        canvas.style.transform = "translateX(" + dir * travel + "px)";
+
+        pdfDoc.getPage(n).then(function (page) {
+          currentPage = page;
+          currentFitScale = computeFitScale(page, n);
+          drawCurrentPage().then(function () {
+            void canvas.offsetWidth; // commit the off-screen start position
+            canvas.style.transition = "transform 0.35s ease";
+            ghost.style.transition = "transform 0.35s ease";
+            canvas.style.transform = "translateX(0)";
+            ghost.style.transform = "translateX(" + -dir * travel + "px)";
+
+            var finished = false;
+            function finish() {
+              if (finished) return;
+              finished = true;
+              ghost.remove();
+              canvas.style.transition = "";
+              canvas.style.transform = "";
+              wrap.style.overflow = prevOverflow;
+              busy = false;
+              cur = n;
+              setUI();
+              if (pendingWheelDir !== null) {
+                var d = pendingWheelDir;
+                pendingWheelDir = null;
+                // targetPage already reflects this queued move (set once,
+                // at queue time, by startSlide) — just execute it, don't
+                // call startSlide again or targetPage gets advanced twice.
+                // If a reversal got reversed again before this slide even
+                // finished, targetPage can end up back at n (the page we
+                // just arrived at) — that's a net no-op, not a real move,
+                // so skip it rather than play a phantom slide in `d`'s
+                // now-meaningless direction.
+                if (targetPage !== n) {
+                  slidePage(targetPage, d);
+                }
+              }
+            }
+            canvas.addEventListener("transitionend", finish, { once: true });
+            setTimeout(finish, 450);
+          });
+        });
+      }
+
+      // Advance targetPage by dir and either start the slide now, or — if
+      // one is already in flight — queue it to start the instant that one
+      // finishes. targetPage (not cur, which only updates once a slide
+      // finishes) is the source of truth for "what page are we headed to",
+      // so a rapid reversal is validated/queued against where we're actually
+      // going, not the stale pre-slide page.
+      function startSlide(dir) {
+        var n = targetPage + dir;
+        targetPage = n;
+        if (busy) {
+          pendingWheelDir = dir;
+        } else {
+          slidePage(n, dir);
+        }
       }
 
       // Zoom centered on a point (scrollX/scrollY in scroll-space pixels)
@@ -340,22 +453,64 @@
         }
       });
 
-      // ── Mouse wheel to change page ──────────────────────────────
-      var wheelCooldown = false;
+      // ── Mouse wheel to change page (fullscreen/closeup only — otherwise
+      //    let the wheel scroll the project page normally) ─────────────
+      // A real trackpad's momentum tail commonly keeps firing same-direction
+      // wheel events for 500ms–1.5s+ after the swipe — well past the ~350ms
+      // slide animation. Gating only on `busy` isn't enough: `busy` clears
+      // mid-tail, and the next same-direction event looks exactly like a
+      // fresh scroll and fires again — so one real scroll ends up flipping
+      // several pages. There's no signal that distinguishes "still that same
+      // decelerating swipe" from "a new one" other than timing, so: a
+      // same-direction event within WHEEL_SAME_DIR_GAP_MS of the last one
+      // (whether or not a slide is currently animating) is treated as more
+      // of that swipe's own burst/tail and ignored. This is narrow — it
+      // never touches direction changes, which always fire immediately
+      // (queued if mid-slide), and it never blocks a same-direction scroll
+      // that starts more than that gap after the last one, which is what
+      // "two scrolls back to back" actually looks like from real input.
+      var activeDir = 0;
+      var lastDirTime = 0;
+      var WHEEL_SAME_DIR_GAP_MS = 60;
       wrap.addEventListener(
         "wheel",
         function (e) {
+          if (!document.fullscreenElement) return;
           e.preventDefault();
-          if (wheelCooldown) return;
-          wheelCooldown = true;
-          setTimeout(function () {
-            wheelCooldown = false;
-          }, 300);
-          if (e.deltaY > 0 && cur < total) render(cur + 1);
-          else if (e.deltaY < 0 && cur > 1) render(cur - 1);
+
+          var dir = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0;
+          if (dir === 0) return;
+          if (dir === 1 && targetPage >= total) return;
+          if (dir === -1 && targetPage <= 1) return;
+
+          var now = Date.now();
+          if (
+            dir === activeDir &&
+            (busy || now - lastDirTime < WHEEL_SAME_DIR_GAP_MS)
+          ) {
+            lastDirTime = now;
+            return;
+          }
+
+          activeDir = dir;
+          lastDirTime = now;
+          startSlide(dir);
         },
         { passive: false },
       );
+
+      // ── Drag slider to scrub through pages ───────────────────────
+      // Plain instant render (no slide animation) — a drag can cross many
+      // pages at once, and render()'s own busy/queued handling already
+      // collapses a fast drag down to just the latest page, so this stays
+      // responsive without piling up a render per intermediate tick.
+      pageSlider.addEventListener("input", function () {
+        var n = parseInt(pageSlider.value, 10);
+        if (pdfDoc && n !== cur) {
+          targetPage = n;
+          render(n, false);
+        }
+      });
 
       // ── Pinch to zoom ───────────────────────────────────────────
       var pinchDist0 = null,
@@ -427,10 +582,10 @@
 
       window._atlas = {
         prev: function () {
-          if (cur > 1) render(cur - 1);
+          if (targetPage > 1) startSlide(-1);
         },
         next: function () {
-          if (cur < total) render(cur + 1);
+          if (targetPage < total) startSlide(1);
         },
         zoomIn: function () {
           applyZoom(zoom * ZOOM_STEP);

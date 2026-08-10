@@ -24,6 +24,13 @@
     </div>
 
     <script>
+      /* Clicking the page background outside the framed box closes the project */
+      document.addEventListener("click", e => {
+        if (!e.target.closest(".outer")) {
+          window.history.back();
+        }
+      });
+
       fetch("projects.json")
         .then((res) => res.json())
         .then((data) => {
@@ -109,5 +116,6 @@
             });
         });
     </script>
+    <script src="cursor.js"></script>
   </body>
 </html>

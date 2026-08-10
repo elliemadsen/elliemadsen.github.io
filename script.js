@@ -45,13 +45,18 @@ function renderProjects() {
 
   filtered.forEach(p => {
     const div = document.createElement("div");
-    div.className = "project";
+    div.className = p.wide ? "project project-wide" : "project";
+    const cover = p.wide && p.wideCover ? p.wideCover : p.cover;
     div.innerHTML = `
-      <img src="${p.cover}" alt="${p.title}">
+      <div class="project-media">
+        <img src="${cover}" alt="${p.title}">
+        <div class="project-hover-image"></div>
+      </div>
       <div class="project-meta">
         <div>${p.title}</div>
         <div class="subtitle">${p.category.join(", ")}</div>
       </div>
+      <div class="project-hover-tile"></div>
     `;
     div.onclick = () => {
       if (p.open_link) {

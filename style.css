@@ -4,8 +4,20 @@
   padding: 0;
 }
 
+:root {
+  /* ---------- Projects grid — tune these ---------- */
+  --grid-padding: 2rem; /* outer padding around the grid, equal on all 4 sides */
+  --grid-gap-x: 6rem; /* horizontal spacing between tile columns */
+  --grid-gap-y: 1rem; /* vertical spacing between tile rows */
+  --grid-columns: 4; /* tiles per row — tile size auto-adjusts to fill the row */
+  --grid-lines: 1; /* 0 = off, 1 = on — thin line centered in the margin between tiles */
+  --grid-line-color: rgb(155, 155, 155); /* color of that grid line */
+  --grid-line-width: 0.1px;
+  --project-hover-mode: 1; /* 0 = invert only the thumbnail on hover; 1 = invert the whole tile, incl. margins out to the grid lines */
+}
+
 body {
-  background: #f6faf2;
+  background: #eaeaea;
   color: black;
   font-family: "Roboto", sans-serif;
   font-weight:240;
@@ -20,6 +32,46 @@ body {
 
 a {
   color: black;
+}
+
+/* Custom color-inverting cursor */
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
+#custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  z-index: 9999;
+  opacity: 0;
+}
+
+#custom-cursor svg {
+  display: block;
+}
+
+/* Hover: invert so links/tiles read clearly under the inverting cursor.
+   --project-hover-mode picks which of the two overlays below is active. */
+@media (pointer: fine) {
+  a:hover {
+    background: white;
+    mix-blend-mode: difference;
+  }
+
+  .project:hover .project-hover-image {
+    opacity: calc(1 - var(--project-hover-mode));
+  }
+
+  .project:hover .project-hover-tile {
+    opacity: var(--project-hover-mode);
+  }
 }
 
 /* Outer container */
@@ -69,7 +121,7 @@ a {
   margin-bottom: 0.75rem;
 }
 .about-me {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 /* Filters */
@@ -94,23 +146,75 @@ a {
 /* Grid */
 .grid {
   display: grid;
-  /* change N columnes in grid here */
-  grid-template-columns: repeat(3, 1fr);
-  /* vertical / horizontal gap can be set independently */
-  row-gap: 2rem;
-  column-gap: 7rem;
-  margin-left: 4rem;
-  margin-right: 4rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  column-gap: var(--grid-gap-x);
+  row-gap: var(--grid-gap-y);
+  padding: var(--grid-padding);
 }
 
 .project {
+  position: relative;
   cursor: pointer;
+}
+
+/* grid-lines: thin line centered in the gap to the right of / below each tile,
+   rather than a border around it. Each line overshoots into the neighboring
+   gutter by half the gap so adjacent tiles' segments meet mid-gutter — that's
+   what makes the verticals/horizontals form one continuous, crossing grid. */
+.project::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--grid-gap-y) / -2);
+  right: calc(var(--grid-gap-x) / -2);
+  width: calc(var(--grid-lines) * var(--grid-line-width));
+  height: calc(100% + var(--grid-gap-y));
+  background: var(--grid-line-color);  
+}
+
+.project::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--grid-gap-x) / -2);
+  bottom: calc(var(--grid-gap-y) / -2);
+  width: calc(100% + var(--grid-gap-x));
+  height: calc(var(--grid-lines) * var(--grid-line-width));
+  background: var(--grid-line-color);
+}
+
+.project-wide {
+  grid-column: 1 / -1;
+}
+
+.project-media {
+  position: relative;
 }
 
 .project img {
   width: 100%;
   display: block;
+}
+
+/* hover-invert overlays — see --project-hover-mode above. Both always exist;
+   only one is ever visible (opacity), the other is fully inert. */
+.project-hover-image {
+  position: absolute;
+  inset: 0;
+  background: white;
+  mix-blend-mode: difference;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.project-hover-tile {
+  position: absolute;
+  top: calc(var(--grid-gap-y) / -2);
+  left: calc(var(--grid-gap-x) / -2);
+  width: calc(100% + var(--grid-gap-x));
+  height: calc(100% + var(--grid-gap-y));
+  background: white;
+  mix-blend-mode: difference;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .project-meta {
@@ -143,11 +247,14 @@ a {
 }
 
 .close-button {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: white;
   text-align: right;
   cursor: pointer;
   font-size: 2rem;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
+  padding: 1rem 1rem 1rem 0;
 }
 
 h4 { /* subtitles on project pages */
@@ -200,8 +307,8 @@ h4 { /* subtitles on project pages */
 
 /* Responsive */
 @media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
+  :root {
+    --grid-columns: 2;
   }
 }
 
@@ -222,8 +329,8 @@ h4 { /* subtitles on project pages */
     width: 100%;
   }
 
-  .grid {
-    grid-template-columns: 1fr;
+  :root {
+    --grid-columns: 1;
   }
 
   .hamburger {
