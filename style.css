@@ -257,6 +257,18 @@ a {
   padding: 1rem 1rem 1rem 0;
 }
 
+.close-button .close-x {
+  display: inline-block;
+  padding: 0 0.3rem;
+  background: white;
+  color: black;
+}
+
+.close-x:hover {
+  background: black;
+  color: white;
+}
+
 h4 { /* subtitles on project pages */
   font-weight: normal;
   font-size: 1.5rem;

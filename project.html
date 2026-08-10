@@ -18,7 +18,7 @@
       <aside class="sidebar" id="project-info"></aside>
 
       <main class="content">
-        <div class="close-button" onclick="window.history.back()">x</div>
+        <div class="close-button" onclick="window.location.href = 'index.html'"><span class="close-x">x</span></div>
         <div id="project-content"></div>
       </main>
     </div>
@@ -27,7 +27,7 @@
       /* Clicking the page background outside the framed box closes the project */
       document.addEventListener("click", e => {
         if (!e.target.closest(".outer")) {
-          window.history.back();
+          window.location.href = "index.html";
         }
       });
 
