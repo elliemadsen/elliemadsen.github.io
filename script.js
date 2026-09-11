@@ -47,9 +47,14 @@ function renderProjects() {
     const div = document.createElement("div");
     div.className = p.wide ? "project project-wide" : "project";
     const cover = p.wide && p.wideCover ? p.wideCover : p.cover;
+    const media = p.wide && p.atlasPages
+      ? `<div class="atlas-scroll" data-pages='${JSON.stringify(p.atlasPages)}'>
+           <img class="atlas-scroll-poster" src="${cover}" alt="${p.title}">
+         </div>`
+      : `<img src="${cover}" alt="${p.title}">`;
     div.innerHTML = `
       <div class="project-media">
-        <img src="${cover}" alt="${p.title}">
+        ${media}
         <div class="project-hover-image"></div>
       </div>
       <div class="project-meta">

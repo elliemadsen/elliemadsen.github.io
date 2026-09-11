@@ -6,10 +6,11 @@
 
 :root {
   /* ---------- Projects grid — tune these ---------- */
-  --grid-padding: 2rem; /* outer padding around the grid, equal on all 4 sides */
-  --grid-gap-x: 6rem; /* horizontal spacing between tile columns */
-  --grid-gap-y: 1rem; /* vertical spacing between tile rows */
-  --grid-columns: 4; /* tiles per row — tile size auto-adjusts to fill the row */
+  --grid-padding: 0.5rem; /* outer padding around the grid, equal on all 4 sides */
+  --grid-gap-x: 1rem; /* horizontal spacing between tile columns */
+  --grid-gap-y: 2rem; /* vertical spacing between tile rows */
+  --tile-min: 180px; /* smallest a tile is allowed to shrink to before wrapping to fewer columns. Tiles always fill their column exactly (no separate max) — auto-fit adds another column once there's room, which keeps individual tile growth self-limiting without needing a hard cap that would misalign the grid-line overlay against wider tracks. */
+  --tile-aspect: 1.15 / 1; /* tile width:height — >1 means shorter than wide; the image shrinks to fit whatever height is left after the caption */
   --grid-lines: 1; /* 0 = off, 1 = on — thin line centered in the margin between tiles */
   --grid-line-color: rgb(155, 155, 155); /* color of that grid line */
   --grid-line-width: 0.1px;
@@ -105,7 +106,19 @@ a {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  overflow: auto; /* allow internal scrolling without escaping the outer box */
+  overflow-y: auto; /* allow internal scrolling without escaping the outer box */
+  /* .grid's edge tiles overshoot --grid-padding slightly (see .grid) —
+     clip that horizontally here rather than on .grid itself. Setting
+     overflow-x on .grid would force its overflow-y to also compute as
+     "auto" (CSS doesn't allow clipping one axis while the other stays
+     "visible"), which re-triggers two problems solved elsewhere: a
+     flexbox/grid-item quirk where any non-visible overflow resets the
+     item's automatic minimum size to 0 (letting it get shrunk/clipped
+     instead of scrolled), and — because the padding needed to work around
+     that quirk has to be bigger than the tiles' own content — a visible
+     gap between the outermost grid-line and this box's border. Clipping
+     here instead means .grid never needs non-visible overflow at all. */
+  overflow-x: hidden;
 }
 
 /* Right sidebar ("Previously") */
@@ -116,12 +129,13 @@ a {
 }
 
 .section-title {
-  /* font-weight: normal; */
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   margin-bottom: 0.75rem;
+  font-weight: 400;
 }
 .about-me {
     font-size: 1.3rem;
+    font-weight: 400;
 }
 
 /* Filters */
@@ -146,15 +160,47 @@ a {
 /* Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  /* Columns are always minmax(--tile-min, 1fr) — 1fr as the max guarantees
+     the tracks divide up the full row width exactly, with no leftover
+     space (a fixed px max here would leave a remainder whenever the
+     container isn't an exact multiple of tile+gap, which — combined with
+     centering — showed up as a blank margin down both sides). auto-fit
+     still means the column *count* responds to available width (more
+     columns fit before they need to grow, fewer as the container narrows).
+     The actual visual tile-size cap is applied on .project itself instead,
+     via --tile-max + margin:auto, so a track can be wider than a tile on
+     very wide screens without stretching the tile itself. */
+  grid-template-columns: repeat(auto-fit, minmax(var(--tile-min), 1fr));
   column-gap: var(--grid-gap-x);
   row-gap: var(--grid-gap-y);
   padding: var(--grid-padding);
+  /* Edge tiles' grid-line/hover-tile overshoot (half the gap, so lines meet
+     mid-gutter) can poke past --grid-padding at the grid's own bounds —
+     .content clips that horizontally so it doesn't cause a phantom
+     scrollbar. Deliberately not clipping overflow here on .grid itself:
+     doing so forces the browser to also treat vertical overflow as
+     scrollable (a flex/grid item can't have one axis clipped and the
+     other "visible"), which both re-enables a sizing quirk where the
+     item's automatic minimum size resets to 0, and makes .grid itself
+     independently, minutely scrollable — a second, nested scrollbar on
+     top of .content's own. Leaving .grid's overflow visible avoids both;
+     .content's clip is enough for the visual overshoot alone. */
 }
 
 .project {
   position: relative;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  /* The whole tile is close to square (slightly shorter than wide) — the
+     image shrinks to make room for the caption below it, rather than the
+     image being square and the caption adding extra height on top of that.
+     min-height:0 matters here: as a grid item, .project's automatic
+     minimum height otherwise defaults to its content's natural size, which
+     can exceed what aspect-ratio implies from the width — overriding it
+     lets aspect-ratio actually win. */
+  aspect-ratio: var(--tile-aspect);
+  min-height: 0;
 }
 
 /* grid-lines: thin line centered in the gap to the right of / below each tile,
@@ -181,17 +227,87 @@ a {
   background: var(--grid-line-color);
 }
 
+/* The wide atlas tile spans the full row at its own natural proportions —
+   not the square card shape used by the regular tiles below. */
 .project-wide {
   grid-column: 1 / -1;
+  display: block;
+  aspect-ratio: auto;
 }
 
+.project-wide .project-media {
+  padding: 1.5rem 2rem 0.3rem;
+}
+
+/* Line up the caption's left/right edges with the image's own inset above,
+   instead of the narrower padding used on the regular square tiles. */
+.project-wide .project-meta {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.project-wide img {
+  max-width: 100%;
+  max-height: none;
+  width: 100%;
+  height: auto;
+  object-fit: initial;
+}
+
+/* Animated atlas cover — a slowly spinning drum of book pages rendered in
+   three.js (see atlas-scroll.js), with the static wideCover image underneath
+   as an aspect-ratio placeholder and a no-JS/no-WebGL fallback. The poster
+   starts hidden so a normal page load never flashes the old static cover —
+   atlas-scroll.js reveals it only if the canvas doesn't end up taking over. */
+.atlas-scroll {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2.8 / 1;
+  overflow: hidden;
+}
+
+.project-wide .atlas-scroll-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.atlas-scroll-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+/* Image zone fills whatever space the caption below doesn't need, within
+   the tile's fixed square — padding here keeps the image from touching the
+   tile's own edges. Less padding on top than the sides/bottom, since the
+   tile's already short on vertical room and the top edge reads fine tighter. */
 .project-media {
   position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0.1rem 0.6rem 0.4rem;
 }
 
 .project img {
-  width: 100%;
   display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 /* hover-invert overlays — see --project-hover-mode above. Both always exist;
@@ -217,8 +333,13 @@ a {
   pointer-events: none;
 }
 
+/* Caption below the image, left-aligned, sized to fit its own content —
+   flex-shrink:0 so it always gets the room it needs and .project-media
+   (flex:1 1 auto above) takes whatever's left within the square tile. */
 .project-meta {
-  margin-top: 0.5rem;
+  flex: 0 0 auto;
+  padding: 0.35rem 0.6rem;
+  text-align: left;
   font-size: 0.9rem;
 }
 
@@ -318,12 +439,6 @@ h4 { /* subtitles on project pages */
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
-  :root {
-    --grid-columns: 2;
-  }
-}
-
 @media (max-width: 600px) {
   .outer {
     flex-direction: column;
@@ -339,10 +454,6 @@ h4 { /* subtitles on project pages */
 
   .content {
     width: 100%;
-  }
-
-  :root {
-    --grid-columns: 1;
   }
 
   .hamburger {

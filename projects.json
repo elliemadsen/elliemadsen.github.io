@@ -6,6 +6,22 @@
     "cover": "image/sat-globe.png",
     "wide": true,
     "wideCover": "Atlas/Grid/grid_5Hx13W.png",
+    "atlasPages": [
+      "image/atlas-pages/atlas-24.jpg",
+      "image/atlas-pages/atlas-25.jpg",
+      "image/atlas-pages/atlas-19.jpg",
+      "image/atlas-pages/atlas-16.jpg",
+      "image/atlas-pages/atlas-20.jpg",
+      "image/atlas-pages/atlas-21.jpg",
+      "image/atlas-pages/atlas-47.jpg",
+      "image/atlas-pages/atlas-46.jpg",
+      "image/atlas-pages/atlas-57.jpg",
+      "image/atlas-pages/atlas-56.jpg",
+      "image/atlas-pages/atlas-62.jpg",
+      "image/atlas-pages/atlas-63.jpg",
+      "image/atlas-pages/atlas-32.jpg",
+      "image/atlas-pages/atlas-33.jpg"
+    ],
     "category": ["GIS", "Writing", "ML"],
     "tools": ["Python", "Google Earth Engine", "GIS", "Adobe"],
     "github": "https://github.com/elliemadsen/satellite-embeddings",
@@ -24,7 +40,7 @@
   },
   {
     "id": "watershed",
-    "title": "NYC Watershed Spatialization",
+    "title": "Watershed Spatialization",
     "year": "2026",
     "cover": "image/watershed_wireframe1.png",
     "category": ["GIS", "Web", "Graphics"],
@@ -41,6 +57,18 @@
     "tools": ["Three.js", "JavaScript"],
     "github": "https://github.com/elliemadsen/ascii-world",
     "link": "https://elliemadsen.net/ascii-world/"
+  },
+  {
+    "id": "greenland",
+    "title": "Infrastructures on Ice",
+    "year": "2024",
+    "cover": "image/greenland.jpg",
+    "category": ["Web", "GIS"],
+    "tools": ["GIS", "JavaScript"],
+    "description": "",
+    "github": "https://github.com/elliemadsen/greenland",
+    "link": "https://elliemadsen.github.io/greenland/",
+    "open_link": true
   },
   {
     "id": "nyc-semantic-clustering",
