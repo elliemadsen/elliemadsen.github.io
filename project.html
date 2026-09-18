@@ -18,14 +18,19 @@
       <aside class="sidebar" id="project-info"></aside>
 
       <main class="content">
-        <div class="close-button" onclick="window.location.href = 'index.html'"><span class="close-x">x</span></div>
+        <div class="close-button" onclick="window.location.href = 'index.html'">
+          <span class="close-x">x</span>
+        </div>
         <div id="project-content"></div>
+        <!-- Mobile only (see style.css) — replaces the "x" close button,
+             which is hidden there. -->
+        <a href="index.html" class="back-link" aria-label="Back to projects">&larr;</a>
       </main>
     </div>
 
     <script>
       /* Clicking the page background outside the framed box closes the project */
-      document.addEventListener("click", e => {
+      document.addEventListener("click", (e) => {
         if (!e.target.closest(".outer")) {
           window.location.href = "index.html";
         }
@@ -77,13 +82,13 @@
               ${
                 project.partner
                   ? `<div>
-                <p class="subtitle">Partner</p>
+                <p class="subtitle">Collaborator</p>
                 <p>${project.partner}</p>
               </div>`
                   : ""
               }
 
-              <img src="${project.cover}" style="width:100%;">
+              <img src="${project.cover}" class="project-cover-photo" style="width:100%;">
             </div>
       `;
 

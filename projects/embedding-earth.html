@@ -132,6 +132,19 @@
       margin: 0 auto;
       touch-action: none;
     }
+
+    /* The toolbar's controls (nav, zoom, page slider, fullscreen) don't fit
+       on one line at phone widths — wrap onto a second row instead of
+       overflowing off the right edge, unreachable. */
+    @media (max-width: 600px) {
+      #atlasToolbar {
+        flex-wrap: wrap;
+        row-gap: 0.35rem;
+      }
+      .atlas-slider {
+        min-width: 40px;
+      }
+    }
   </style>
 
   <div id="atlasViewer">

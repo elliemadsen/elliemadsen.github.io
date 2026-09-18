@@ -88,7 +88,13 @@
       <!-- Middle column -->
       <main class="content">
         <!-- <div id="filters" class="filters"></div> -->
+        <!-- Mobile only (see style.css) — desktop's "Projects" heading is
+             implicit in the grid itself, so this stays hidden there. -->
+        <p class="section-title mobile-projects-title">Projects</p>
         <div id="projects" class="grid"></div>
+        <button type="button" class="see-more-btn" id="seeMoreBtn">
+          See more
+        </button>
       </main>
 
       <!-- Right column -->
@@ -214,9 +220,6 @@
         </div>
       </aside>
     </div>
-
-    <!-- Hamburger (mobile only) -->
-    <div class="hamburger">☰</div>
 
     <script src="cursor.js"></script>
     <script src="script.js"></script>

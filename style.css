@@ -428,36 +428,159 @@ h4 { /* subtitles on project pages */
 }
 
 
-/* Hamburger */
-.hamburger {
+/* Mobile-only "Projects" heading + "see more" toggle above/below the grid
+   (see index.html) — irrelevant on desktop, where the grid already shows
+   everything and has no separate heading of its own. Also mobile-only:
+   project.html's "back to projects" link (see below). */
+.mobile-projects-title,
+.see-more-btn,
+.back-link {
   display: none;
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  font-size: 1.5rem;
-  cursor: pointer;
 }
 
 /* Responsive */
 @media (max-width: 600px) {
+  /* No more fixed-height, clipped frame — the whole page just flows and
+     scrolls normally, with a slimmer margin than desktop's. */
+  body {
+    height: auto;
+    min-height: 100vh;
+  }
+
   .outer {
+    position: relative;
+    inset: auto;
+    margin: 0.75rem;
+    min-height: calc(100vh - 1.5rem);
+    overflow: visible;
     flex-direction: column;
   }
 
+  /* Both sidebars are always visible now (stacked in document order: About
+     me, then Projects, then Education/Work/Writing) — nothing left to hide
+     behind a toggle. */
   .sidebar {
-    display: none;
     width: 100%;
     border-right: none;
     border-left: none;
     border-bottom: 1px solid black;
   }
 
-  .content {
-    width: 100%;
+  /* .sidebar.previously (2 classes) otherwise beats the plain .sidebar
+     override above on specificity, so its desktop border-left survives and
+     doubles up against .outer's own left border right next to it — same
+     story for border-bottom, since this section is now the last thing
+     stacked in .outer and .outer's bottom border already closes it off
+     here. Both read as one border drawn twice as thick. */
+  .sidebar.previously {
+    overflow-y: visible;
+    border-left: none;
+    border-bottom: none;
   }
 
-  .hamburger {
+  /* justify-content: space-between (desktop) only pushes this to the
+     bottom when the sidebar has a tall, fixed height to distribute; here
+     the sidebar is just as tall as its own content, so without an explicit
+     gap this butts right up against the paragraph above it. */
+  .sidebar-bottom {
+    margin-top: 1.5rem;
+  }
+
+  /* A bigger, bolder opening line reads better as a phone-screen intro. */
+  .about-me {
+    font-size: 1.7rem;
+  }
+
+  .content {
+    width: 100%;
+    overflow-y: visible;
+  }
+
+  .mobile-projects-title {
     display: block;
+    padding: 1rem 1rem 0;
+  }
+
+  /* Only the atlas tile shows by default; the rest of the grid stays
+     collapsed until "See more" is tapped (see script.js). */
+  .grid .project:not(.project-wide) {
+    display: none;
+  }
+
+  .grid.expanded .project:not(.project-wide) {
+    display: flex;
+  }
+
+  /* Two columns once expanded, rather than the single column --tile-min
+     (180px) would otherwise force at phone widths. */
+  .grid.expanded {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* border-bottom (not -top): this sits right after the atlas tile, still
+     visually part of the Projects section, so the divider line belongs
+     below it — marking the section's end — not above it, which would read
+     as separating the button from the tile it belongs with. */
+  .see-more-btn {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    border-bottom: 1px solid black;
+    color: black;
+    font: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  /* The atlas tile is itself a .project, so it carries the grid's usual
+     trailing grid-line (.project::before) along its own bottom edge — right
+     above "See more". Wanted once other tiles are showing below it (reads
+     as a row divider) but not while it's the only tile in the grid. */
+  .grid:not(.expanded) .project-wide::before {
+    display: none;
+  }
+
+  /* The oval track's desktop aspect (2.8/1) reduces to a sliver at phone
+     widths, with too little height for the animation to read. A shorter,
+     taller ratio gives it more room to fill the tile. */
+  .atlas-scroll {
+    aspect-ratio: 1.6 / 1;
+  }
+
+  /* Side-by-side image comparisons are too cramped to read at phone
+     widths — stack them instead. */
+  .project-content .image-row {
+    flex-direction: column;
+  }
+
+  /* project.html: no "x", no repeated cover photo above the sidebar's own
+     metadata — instead a plain arrow at the very end of the page. */
+  .close-button {
+    display: none;
+  }
+
+  .project-cover-photo {
+    display: none;
+  }
+
+  .back-link {
+    display: block;
+    padding: 1rem;
+    font-size: 1.3rem;
+    line-height: 1;
+    text-align: left;
+    text-decoration: none;
+  }
+
+  /* Room to breathe below the sidebar's own closing border-bottom, before
+     the write-up's body text starts. */
+  #project-content {
+    margin-top: 1.5rem;
   }
 }
 

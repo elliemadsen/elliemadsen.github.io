@@ -74,11 +74,15 @@ function renderProjects() {
   });
 }
 
-/* Mobile menu toggle */
-document.querySelector(".hamburger").onclick = () => {
-  const sidebars = document.querySelectorAll(".sidebar");
-  const show = sidebars[0].style.display !== "flex";
-  sidebars.forEach(sidebar => {
-    sidebar.style.display = show ? "flex" : "none";
-  });
-};
+/* Mobile only: the grid starts collapsed to just the atlas tile (see
+   style.css); this toggles the rest. The button's own position in the DOM
+   never changes — it just ends up below the rest of the grid once expanded,
+   since those tiles reflow in above it. No-op on desktop, where the button
+   stays hidden and never receives a click. */
+const seeMoreBtn = document.getElementById("seeMoreBtn");
+if (seeMoreBtn) {
+  seeMoreBtn.onclick = () => {
+    const expanded = document.getElementById("projects").classList.toggle("expanded");
+    seeMoreBtn.textContent = expanded ? "See less" : "See more";
+  };
+}
