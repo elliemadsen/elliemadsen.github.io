@@ -5,7 +5,7 @@
     "year": "2026",
     "cover": "image/sat-globe.png",
     "wide": true,
-    "wideCover": "Atlas/Grid/grid_5Hx13W.png",
+    "wideCover": "Atlas/Grid/grid_3Hx11W.png",
     "atlasPages": [
       "image/atlas-pages/atlas-24.jpg",
       "image/atlas-pages/atlas-25.jpg",
@@ -22,21 +22,10 @@
       "image/atlas-pages/atlas-32.jpg",
       "image/atlas-pages/atlas-33.jpg"
     ],
-    "category": ["GIS", "Writing", "ML"],
+    "category": ["Writing", "GIS", "ML"],
     "tools": ["Python", "Google Earth Engine", "GIS", "Adobe"],
     "github": "https://github.com/elliemadsen/satellite-embeddings",
     "link": "https://gsapp-cdp.github.io/archive/projects/2026/EmbeddingEarth/"
-  },
-  {
-    "id": "hypercity",
-    "title": "Reading the Hypercity",
-    "year": "2026",
-    "cover": "image/hypercity.png",
-    "category": ["Writing", "Web"],
-    "tools": [],
-    "github": "https://github.com/elliemadsen/hypercity",
-    "link": "https://elliemadsen.net/hypercity/",
-    "open_link": true
   },
   {
     "id": "watershed",
@@ -57,6 +46,28 @@
     "tools": ["Three.js", "JavaScript"],
     "github": "https://github.com/elliemadsen/ascii-world",
     "link": "https://elliemadsen.net/ascii-world/"
+  },
+  {
+    "id": "green-counting",
+    "title": "Green Counting",
+    "year": "2026",
+    "cover": "image/green-counting.png",
+    "category": ["Web, NLP"],
+    "tools": ["JavaScript"],
+    "github": "https://github.com/elliemadsen/green-counting",
+    "link": "https://elliemadsen.net/green-counting/",
+    "open_link": true
+  },
+  {
+    "id": "hypercity",
+    "title": "Reading the Hypercity",
+    "year": "2026",
+    "cover": "image/hypercity.png",
+    "category": ["Writing", "Web"],
+    "tools": [],
+    "github": "https://github.com/elliemadsen/hypercity",
+    "link": "https://elliemadsen.net/hypercity/",
+    "open_link": true
   },
   {
     "id": "greenland",
@@ -85,7 +96,7 @@
     "title": "Digital Library",
     "year": "2024",
     "cover": "image/library1.png",
-    "category": ["Web", "ML"],
+    "category": ["Web", "ML", "NLP"],
     "tools": ["Machine Learning", "JavaScript"],
     "github": "https://github.com/elliemadsen/digital-library",
     "link": "https://elliemadsen.net/digital-library/",

@@ -3,7 +3,7 @@ if (window.matchMedia("(pointer: fine)").matches) {
   const cursor = document.createElement("div");
   cursor.id = "custom-cursor";
   cursor.innerHTML =
-    '<svg width="26" height="26" viewBox="0 0 24 24"><path d="M0 0L0 17.5L4.5 13.7L7.5 20L10.3 18.7L7.4 12.5L13.5 12.3Z" fill="white"/></svg>';
+    '<svg width="36" height="36" viewBox="0 0 24 24"><path d="M0 0L0 17.5L4.5 13.7L7.5 20L10.3 18.7L7.4 12.5L13.5 12.3Z" fill="white"/></svg>';
   document.body.appendChild(cursor);
 
   document.addEventListener("mousemove", e => {

@@ -2,23 +2,25 @@
 """Assemble the square tile PNGs in Pages/ into a single grid image.
 
 Usage:
-    python3 build_grid.py [--rows H] [--cols W] [--tile-size PX] [--skip N ...]
+    python3 build_grid.py [--rows H] [--cols W] [--tile-size PX] [--pages N ...]
 
-Tiles are read from Pages/ (Atlas.png, Atlas2.png, ... Atlas67.png, sorted
-numerically) and placed left-to-right, top-to-bottom. If there are fewer
-tiles than grid cells, the remaining cells are left white. If there are
-more tiles than cells, the extras are skipped and a warning is printed.
+Tiles are read from Pages/ (Atlas.png = page 1, Atlas2.png = page 2, ...
+Atlas67.png = page 67).
 
---skip takes one or more 1-based positions in that sorted order to leave
-out entirely (the cell they would have occupied is left white, and every
-later tile shifts up to fill the gap). e.g. --skip 2 omits the 2nd tile
-(Atlas2.png); --skip 2 5 omits the 2nd and 5th.
+--pages takes one or more page numbers and places exactly those tiles, in
+the order given — left-to-right, top-to-bottom. e.g. --pages 5 2 9 places
+page 5 first, then 2, then 9, and every other page is left out entirely.
+Omit --pages to include every page found, in numeric order. If there are
+fewer tiles than grid cells, the remaining cells are left white; if there
+are more, the extras are skipped and a warning is printed.
 
 Source tiles are 7200x7200px; assembling them at full resolution would
 produce an unusably large file, so each tile is downscaled to --tile-size
 (default 600px) before being placed. Pass a larger --tile-size (up to 7200)
 for higher-resolution output.
-"""
+
+Command:
+python3 Atlas/Grid/build_grid.py --rows 3 --cols 11 --pages 1 3 7 8 9 12 15 16 20 21 22 24 25 30 31 32 33 35 50 51 46 47 53 37 38 48 49 34 62 63 64 66 67"""
 
 import argparse
 import re
@@ -39,11 +41,11 @@ def tile_index(path: Path) -> int:
     return int(digits) if digits else 1
 
 
-def load_tiles() -> list[Path]:
+def load_tiles() -> dict[int, Path]:
     tiles = [p for p in PAGES_DIR.glob("*.png") if NAME_RE.match(p.name)]
     if not tiles:
         sys.exit(f"No tile PNGs found in {PAGES_DIR}")
-    return sorted(tiles, key=tile_index)
+    return {tile_index(p): p for p in tiles}
 
 
 def main() -> None:
@@ -57,25 +59,26 @@ def main() -> None:
         help="size in pixels each square tile is scaled to before placement (default 600)",
     )
     parser.add_argument(
-        "--skip",
+        "--pages",
         type=int,
         nargs="+",
-        default=[],
+        default=None,
         metavar="N",
-        help="1-based position(s) in the sorted tile order to omit, e.g. --skip 2 5",
+        help="page number(s) to include, in the order given, e.g. --pages 5 2 9. Omit to include every page, in numeric order.",
     )
     args = parser.parse_args()
 
     rows, cols, tile_size = args.rows, args.cols, args.tile_size
-    tiles = load_tiles()
+    tiles_by_page = load_tiles()
 
-    skip_positions = set(args.skip)
-    invalid = sorted(p for p in skip_positions if p < 1 or p > len(tiles))
-    if invalid:
-        sys.exit(f"--skip position(s) out of range (1-{len(tiles)}): {invalid}")
-    if skip_positions:
-        tiles = [t for i, t in enumerate(tiles, start=1) if i not in skip_positions]
-        print(f"skipping {len(skip_positions)} tile(s): {sorted(skip_positions)}")
+    if args.pages is not None:
+        invalid = sorted(set(n for n in args.pages if n not in tiles_by_page))
+        if invalid:
+            sys.exit(f"--pages page number(s) not found in {PAGES_DIR}: {invalid}")
+        tiles = [tiles_by_page[n] for n in args.pages]
+        print(f"including {len(tiles)} tile(s) in the given order: {args.pages}")
+    else:
+        tiles = [tiles_by_page[n] for n in sorted(tiles_by_page)]
 
     capacity = rows * cols
 

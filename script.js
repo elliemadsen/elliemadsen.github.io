@@ -47,11 +47,14 @@ function renderProjects() {
     const div = document.createElement("div");
     div.className = p.wide ? "project project-wide" : "project";
     const cover = p.wide && p.wideCover ? p.wideCover : p.cover;
-    const media = p.wide && p.atlasPages
-      ? `<div class="atlas-scroll" data-pages='${JSON.stringify(p.atlasPages)}'>
-           <img class="atlas-scroll-poster" src="${cover}" alt="${p.title}">
-         </div>`
-      : `<img src="${cover}" alt="${p.title}">`;
+    // Spinning atlas carousel (three.js) — disabled, reverted to the plain
+    // static cover image. Code kept intact; uncomment to re-enable.
+    // const media = p.wide && p.atlasPages
+    //   ? `<div class="atlas-scroll" data-pages='${JSON.stringify(p.atlasPages)}'>
+    //        <img class="atlas-scroll-poster" src="${cover}" alt="${p.title}">
+    //      </div>`
+    //   : `<img src="${cover}" alt="${p.title}">`;
+    const media = `<img src="${cover}" alt="${p.title}">`;
     div.innerHTML = `
       <div class="project-media">
         ${media}
