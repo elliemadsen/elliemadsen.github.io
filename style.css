@@ -9,7 +9,27 @@
   --grid-padding: 0.5rem; /* outer padding around the grid, equal on all 4 sides */
   --grid-gap-x: 1rem; /* horizontal spacing between tile columns */
   --grid-gap-y: 2rem; /* vertical spacing between tile rows */
-  --tile-min: 180px; /* smallest a tile is allowed to shrink to before wrapping to fewer columns. Tiles always fill their column exactly (no separate max) — auto-fit adds another column once there's room, which keeps individual tile growth self-limiting without needing a hard cap that would misalign the grid-line overlay against wider tracks. */
+  /* Smallest a tile is allowed to shrink to before wrapping to fewer
+     columns. Tiles always fill their column exactly (no separate max) —
+     auto-fit adds another column once there's room, which keeps individual
+     tile growth self-limiting without needing a hard cap that would
+     misalign the grid-line overlay against wider tracks.
+     A fixed px floor only lets tiles shrink in the moment right before a
+     column drops — otherwise auto-fit just removes a column and the
+     remaining ones re-expand to fill the row, so size barely changes as
+     the window narrows. Scaling the floor itself with the *content panel's*
+     own width (not the viewport — see .content's container-type below,
+     which is what makes cqw mean that rather than the whole screen) makes
+     tiles actually shrink continuously as the panel narrows, between 130px
+     and the original 180px cap.
+     27cqw (not a rounder number) is reverse-engineered from device testing:
+     at 20cqw, auto-fit let an extra column sneak in right around iPad Pro
+     13"/Surface Pro portrait content widths specifically, so tiles there
+     came out smaller than iPad Mini's despite the wider screen (128px vs.
+     135px). Raising the floor enough to keep that extra column from fitting
+     fixed those two without changing iPad Mini (still 135px) or any
+     landscape width (already at or near the 180px cap). */
+  --tile-min: clamp(130px, 27cqw, 180px);
   --tile-aspect: 1.15 / 1; /* tile width:height — >1 means shorter than wide; the image shrinks to fit whatever height is left after the caption */
   --grid-lines: 1; /* 0 = off, 1 = on — thin line centered in the margin between tiles */
   --grid-line-color: rgb(155, 155, 155); /* color of that grid line */
@@ -97,6 +117,10 @@ a {
   padding: 1rem;
   font-size: 0.9rem;
   overflow-wrap: break-word;
+  /* .outer clips overflow, so without this, content taller than the
+     sidebar (e.g. the bio growing) would be silently cut off with no way
+     to reach the rest — scroll instead. */
+  overflow-y: auto;
 }
 
 /* Content */
@@ -106,6 +130,10 @@ a {
   min-width: 0;
   display: flex;
   flex-direction: column;
+  /* Lets --tile-min (below) scale with this panel's own width via cqw,
+     rather than the full viewport — matters once the sidebars' width
+     changes independently (see the tablet breakpoint). */
+  container-type: inline-size;
   overflow-y: auto; /* allow internal scrolling without escaping the outer box */
   /* .grid's edge tiles overshoot --grid-padding slightly (see .grid) —
      clip that horizontally here rather than on .grid itself. Setting
@@ -125,7 +153,6 @@ a {
 .sidebar.previously {
   border-right: none;
   border-left: 1px solid black;
-  overflow-y: auto;
 }
 
 .section-title {
@@ -134,7 +161,7 @@ a {
   font-weight: 400;
 }
 .about-me {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 400;
 }
 
@@ -439,6 +466,16 @@ h4 { /* subtitles on project pages */
   display: none;
 }
 
+/* Tablet (iPad portrait/landscape, and similarly narrow laptops) — still the
+   3-column layout, just rebalanced: the sidebars have more to say relative
+   to how much width is left for them at this size, so give them more of it
+   and let the center column give up the difference. */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .sidebar {
+    width: 28%;
+  }
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   /* No more fixed-height, clipped frame — the whole page just flows and
@@ -465,6 +502,10 @@ h4 { /* subtitles on project pages */
     border-right: none;
     border-left: none;
     border-bottom: 1px solid black;
+    /* The whole page scrolls on mobile (see .outer above) — each sidebar's
+       own overflow-y: auto (desktop) would otherwise nest a nested scroll
+       region inside that. */
+    overflow-y: visible;
   }
 
   /* .sidebar.previously (2 classes) otherwise beats the plain .sidebar
@@ -474,7 +515,6 @@ h4 { /* subtitles on project pages */
      stacked in .outer and .outer's bottom border already closes it off
      here. Both read as one border drawn twice as thick. */
   .sidebar.previously {
-    overflow-y: visible;
     border-left: none;
     border-bottom: none;
   }
