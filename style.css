@@ -155,6 +155,22 @@ a {
   border-left: 1px solid black;
 }
 
+/* Updates column — sits between the projects grid and "Previously", whose
+   own border-left already closes it off on the right. */
+.sidebar.updates {
+  border-right: none;
+  border-left: 1px solid black;
+}
+
+.update {
+  margin-bottom: 1.5rem;
+}
+
+.update-date {
+  font-size: 0.7rem;
+  margin-bottom: 0.25rem;
+}
+
 .section-title {
   font-size: 1.1rem;
   margin-bottom: 0.75rem;
@@ -461,18 +477,20 @@ h4 { /* subtitles on project pages */
    everything and has no separate heading of its own. Also mobile-only:
    project.html's "back to projects" link (see below). */
 .mobile-projects-title,
+.mobile-contact,
 .see-more-btn,
 .back-link {
   display: none;
 }
 
 /* Tablet (iPad portrait/landscape, and similarly narrow laptops) — still the
-   3-column layout, just rebalanced: the sidebars have more to say relative
+   4-column layout, just rebalanced: the sidebars have more to say relative
    to how much width is left for them at this size, so give them more of it
-   and let the center column give up the difference. */
+   and let the projects column give up the difference. (Kept below 3 × 28%
+   now that there are three sidebars, so the grid still has room.) */
 @media (min-width: 601px) and (max-width: 1024px) {
   .sidebar {
-    width: 28%;
+    width: 22%;
   }
 }
 
@@ -494,9 +512,9 @@ h4 { /* subtitles on project pages */
     flex-direction: column;
   }
 
-  /* Both sidebars are always visible now (stacked in document order: About
-     me, then Projects, then Education/Work/Writing) — nothing left to hide
-     behind a toggle. */
+  /* All sidebars are always visible now (stacked: About me, Updates,
+     Projects, then Education/Work/Writing — see the order rules below) —
+     nothing left to hide behind a toggle. */
   .sidebar {
     width: 100%;
     border-right: none;
@@ -519,17 +537,52 @@ h4 { /* subtitles on project pages */
     border-bottom: none;
   }
 
-  /* justify-content: space-between (desktop) only pushes this to the
-     bottom when the sidebar has a tall, fixed height to distribute; here
-     the sidebar is just as tall as its own content, so without an explicit
-     gap this butts right up against the paragraph above it. */
+  /* Same specificity story as above — drop the desktop border-left. Its
+     border-bottom stays, dividing it from "Previously" stacked below. */
+  .sidebar.updates {
+    border-left: none;
+  }
+
+  /* Stacking order: About me, Updates, Projects, then Education/Work/
+     Writing — Updates moves up ahead of Projects (DOM order has it after,
+     for the desktop column layout). */
+  .sidebar {
+    order: 1;
+  }
+
+  .sidebar.updates {
+    order: 2;
+  }
+
+  .content {
+    order: 3;
+  }
+
+  .sidebar.previously {
+    order: 4;
+  }
+
+  /* Contact info moves down into its own section at the very end (see
+     .mobile-contact in index.html). Its gap from Speaking above is set
+     here rather than with <br />s, which would also pad the bottom of the
+     desktop column even while this section is hidden. */
   .sidebar-bottom {
-    margin-top: 1.5rem;
+    display: none;
+  }
+
+  .mobile-contact {
+    display: block;
+    margin-top: 2rem;
   }
 
   /* A bigger, bolder opening line reads better as a phone-screen intro. */
   .about-me {
-    font-size: 1.7rem;
+    font-size: 2rem;
+  }
+
+  .bio {
+    font-size: 1.05rem;
+    margin: 1rem 0 1.5rem;
   }
 
   .content {
@@ -570,12 +623,26 @@ h4 { /* subtitles on project pages */
     background: none;
     border: none;
     border-bottom: 1px solid black;
-    color: black;
+    color: #888;
     font: inherit;
     font-size: 0.9rem;
     text-align: left;
     text-decoration: underline;
     cursor: pointer;
+  }
+
+  /* Updates: just the 3 most recent until "See more" is tapped. */
+  #updates:not(.expanded) .update:nth-child(n + 4) {
+    display: none;
+  }
+
+  /* Unlike the projects button, this one sits inside the sidebar's own
+     padding, right above the sidebar's border-bottom — so no divider line
+     of its own (it would double up) and no extra inset. */
+  .updates-see-more {
+    margin-top: 0;
+    padding: 0;
+    border-bottom: none;
   }
 
   /* The atlas tile is itself a .project, so it carries the grid's usual

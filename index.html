@@ -23,14 +23,14 @@
             working at the intersection of media, computation, and the
             environment.
           </p>
-          <p>
+          <p class="bio">
             <br />
             Her research practice questions the spatial, aesthetic, and
             epistemic conditions of digital Earth representations, including
             geographic information systems, climate models, and remote sensing
             technologies. More broadly, she is interested in how computational
             infrastructures mediate physical and digital environments. Her
-            research methods include environmental science, computational
+            research methods include environmental analysis, computational
             design, mapping, modeling, writing, data visualization, software
             engineering, and web development.
             <!-- <br /><br />
@@ -88,6 +88,22 @@
           See more
         </button>
       </main>
+
+      <!-- Updates column (filled from updates.json, see scripts/script.js) -->
+      <aside class="sidebar updates">
+        <div>
+          <p class="section-title">Updates</p>
+          <div id="updates"></div>
+          <!-- Mobile only, like the projects one above (see style.css). -->
+          <button
+            type="button"
+            class="see-more-btn updates-see-more"
+            id="updatesSeeMoreBtn"
+          >
+            See more
+          </button>
+        </div>
+      </aside>
 
       <!-- Right column -->
       <aside class="sidebar previously">
@@ -218,6 +234,31 @@
           <a href="https://www.bgc.bard.edu/sensing-matters" target="_blank"
             >Sensing Matters: Bard Graduate College Symposium</a
           >
+          <!-- Mobile only — on desktop this lives at the bottom of the left
+               column instead (.sidebar-bottom, hidden on mobile). -->
+          <div class="mobile-contact">
+            <p class="section-title">Contact</p>
+            <p>
+              You can find Ellie on
+              <a href="https://github.com/elliemadsen" target="_blank">GitHub</a
+              >,
+              <a
+                href="https://www.are.na/ellie-madsen-t_ijbndszli/channels"
+                target="_blank"
+                >Are.na</a
+              >,
+              <a
+                href="https://www.linkedin.com/in/ellie-madsen-744565155/"
+                target="_blank"
+                >LinkedIn</a
+              >, and <a href="mailto:ellie.madsen11@gmail.com">email</a>.
+              <br /><br />
+              <a
+                href="https://docs.google.com/document/d/1JIZXhSo0Tm8vtNZMRzB95DF335tTFsoKjkwVzsuYzyY/export?format=pdf"
+                >Download CV.</a
+              >
+            </p>
+          </div>
         </div>
       </aside>
     </div>

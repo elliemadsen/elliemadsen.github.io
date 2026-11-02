@@ -9,6 +9,25 @@ fetch("projects.json")
     renderProjects();
   });
 
+fetch("updates.json")
+  .then(res => res.json())
+  .then(renderUpdates);
+
+function renderUpdates(updates) {
+  const list = document.getElementById("updates");
+  list.innerHTML = "";
+
+  updates.forEach(u => {
+    const div = document.createElement("div");
+    div.className = "update";
+    div.innerHTML = `
+      <div class="update-date">${u.date}</div>
+      <p>${u.html}</p>
+    `;
+    list.appendChild(div);
+  });
+}
+
 /*
 function renderFilters() {
   const filters = document.getElementById("filters");
@@ -82,10 +101,15 @@ function renderProjects() {
    never changes — it just ends up below the rest of the grid once expanded,
    since those tiles reflow in above it. No-op on desktop, where the button
    stays hidden and never receives a click. */
-const seeMoreBtn = document.getElementById("seeMoreBtn");
-if (seeMoreBtn) {
-  seeMoreBtn.onclick = () => {
-    const expanded = document.getElementById("projects").classList.toggle("expanded");
-    seeMoreBtn.textContent = expanded ? "See less" : "See more";
+function setupSeeMore(buttonId, listId) {
+  const btn = document.getElementById(buttonId);
+  if (!btn) return;
+  btn.onclick = () => {
+    const expanded = document.getElementById(listId).classList.toggle("expanded");
+    btn.textContent = expanded ? "See less" : "See more";
   };
 }
+
+setupSeeMore("seeMoreBtn", "projects");
+// Same idea for the updates column: only the first 3 show until expanded.
+setupSeeMore("updatesSeeMoreBtn", "updates");
