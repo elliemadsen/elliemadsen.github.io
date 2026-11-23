@@ -19,5 +19,16 @@
     "description": "",
     "github": "https://github.com/elliemadsen/greenland",
     "link": "https://elliemadsen.github.io/greenland/"
+  },
+  {
+    "id": "virtual-immaterial",
+    "title": "Virtual (im)material",
+    "year": "2021",
+    "cover": "image/world/world2.png",
+    "category": ["Graphics"],
+    "tools": ["C#", "Unity"],
+    "github": "https://github.com/elliemadsen/unity-digital-world",
+    "link": "",
+    "partner": "MC Vigilante"
   }
 ]

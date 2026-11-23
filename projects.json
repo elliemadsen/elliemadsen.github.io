@@ -28,8 +28,19 @@
     "link": "https://gsapp-cdp.github.io/archive/projects/2026/EmbeddingEarth/"
   },
   {
+    "id": "score",
+    "title": "Are.na Annual: Score",
+    "year": "2026",
+    "cover": "image/arena_annual.png",
+    "category": ["Writing"],
+    "tools": [],
+    "github": "",
+    "link": "https://store.are.na/products/are-na-annual-vol-8-score?variant=68385378828439",
+    "open_link": true
+  },
+  {
     "id": "watershed",
-    "title": "Watershed Spatialization",
+    "title": "Watershed Visualization",
     "year": "2026",
     "cover": "image/watershed/watershed_wireframe1.png",
     "category": ["GIS", "Web", "Graphics"],
@@ -133,16 +144,5 @@
     "github": "https://github.com/elliemadsen/terrain-generator",
     "link": "",
     "partner": "Jenna Soenksen"
-  },
-  {
-    "id": "virtual-immaterial",
-    "title": "Virtual (im)material",
-    "year": "2021",
-    "cover": "image/world/world2.png",
-    "category": ["Graphics"],
-    "tools": ["C#", "Unity"],
-    "github": "https://github.com/elliemadsen/unity-digital-world",
-    "link": "",
-    "partner": "MC Vigilante"
   }
 ]

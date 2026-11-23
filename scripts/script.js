@@ -9,9 +9,98 @@ fetch("projects.json")
     renderProjects();
   });
 
-fetch("updates.json")
-  .then(res => res.json())
-  .then(renderUpdates);
+/* Updates come from a Google Sheet (columns: Date, Text, Link), which is
+   shared as "Anyone with the link can view". The gviz endpoint is
+   used (rather than /export) because it sends CORS headers.
+   In the Text column, <like this> becomes a link and *like this* becomes
+   italic. A row with several <links> lists their URLs in its Link cell
+   in the same order, separated by spaces. */
+const UPDATES_SHEET_ID = "1ymsjTi-mLdd6X3eZR2odizhe8rLh-V-wGN-Z99vxVqg";
+const UPDATES_SHEET_URL =
+  `https://docs.google.com/spreadsheets/d/${UPDATES_SHEET_ID}/gviz/tq?tqx=out:csv&headers=1`;
+
+fetch(UPDATES_SHEET_URL)
+  .then(res => {
+    if (!res.ok) throw new Error(`Updates sheet: HTTP ${res.status}`);
+    return res.text();
+  })
+  .then(csv => renderUpdates(parseUpdatesSheet(csv)))
+  .catch(err => console.error(err));
+
+function parseUpdatesSheet(csv) {
+  const [header, ...rows] = parseCsv(csv);
+  const col = name => header.findIndex(h => h.trim().toLowerCase() === name);
+  const dateCol = col("date");
+  const textCol = col("text");
+  const linkCol = col("link");
+
+  return rows
+    .filter(r => (r[textCol] || "").trim())
+    .map(r => ({
+      date: (r[dateCol] || "").trim(),
+      html: updateTextToHtml(r[textCol], r[linkCol] || ""),
+    }));
+}
+
+function updateTextToHtml(text, links) {
+  const urls = links.trim().split(/\s+/).filter(Boolean);
+  let next = 0;
+  return escapeHtml(text.trim())
+    .replace(/&lt;(.+?)&gt;/g, (match, label) => {
+      const url = urls[next++];
+      return url
+        ? `<a href="${escapeHtml(url)}" target="_blank">${label}</a>`
+        : label;
+    })
+    .replace(/\*(.+?)\*/g, "<em>$1</em>");
+}
+
+function escapeHtml(s) {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// Minimal CSV parser: handles quoted fields with commas, "" and newlines.
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let quoted = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (quoted) {
+      if (ch === '"' && text[i + 1] === '"') {
+        field += '"';
+        i++;
+      } else if (ch === '"') {
+        quoted = false;
+      } else {
+        field += ch;
+      }
+    } else if (ch === '"') {
+      quoted = true;
+    } else if (ch === ",") {
+      row.push(field);
+      field = "";
+    } else if (ch === "\n") {
+      row.push(field);
+      rows.push(row);
+      row = [];
+      field = "";
+    } else if (ch !== "\r") {
+      field += ch;
+    }
+  }
+  if (field || row.length) {
+    row.push(field);
+    rows.push(row);
+  }
+  return rows;
+}
 
 function renderUpdates(updates) {
   const list = document.getElementById("updates");
